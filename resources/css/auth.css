@@ -1,0 +1,204 @@
+/* =============================
+   HALAMAN AUTH (LOGIN & REGISTER)
+============================= */
+
+.auth-page {
+  background: #ffffff;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+}
+
+/* wrapper */
+.auth-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+
+/* grid 2 kolom */
+.auth-grid {
+  width: 100%;
+  max-width: 1300px;
+  display: grid;
+  grid-template-columns: 1fr 520px;
+  gap: 56px;
+  align-items: center;
+}
+
+/* =============================
+   KIRI - ILUSTRASI
+============================= */
+.auth-left {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-illus {
+  width: 520px;
+  max-width: 100%;
+  height: auto;
+}
+
+/* =============================
+   KANAN - PANEL BIRU + CURVE
+============================= */
+.auth-right {
+  display: flex;
+  justify-content: center;
+}
+
+.auth-panel {
+  width: 520px;
+  max-width: 100%;
+  padding: 52px 44px;
+  background: #b7c9f2;
+  border-radius: 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* CURVE: lingkaran besar di KANAN (ini kunci desain kamu) */
+.auth-panel::after {
+  content: "";
+  position: absolute;
+  right: -520px;              /* geser keluar kanan */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1040px;
+  height: 1040px;
+  background: #b7c9f2;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* isi panel di atas curve */
+.auth-panel > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* =============================
+   HEADER
+============================= */
+.auth-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.auth-header img {
+  height: 40px;
+  margin: 0 auto;
+  display: block;
+}
+
+.auth-title {
+  margin-top: 14px;
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  font-size: 14px;
+}
+
+/* =============================
+   FIELD
+============================= */
+.auth-field {
+  margin-bottom: 18px;
+}
+
+.auth-label {
+  display: block;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+/* =============================
+   INPUT STYLE (COKLAT)
+============================= */
+.auth-input {
+  width: 100%;
+  background: #a89a94 !important;
+  border: none !important;
+  padding: 12px 14px;
+  border-radius: 4px; /* desain terlihat agak kotak, tapi tetap halus */
+  color: #ffffff !important;
+  font-size: 14px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.16);
+}
+
+.auth-input::placeholder {
+  color: rgba(255, 255, 255, 0.55) !important;
+}
+
+.auth-input:focus {
+  outline: none !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.16),
+    0 0 0 2px rgba(255,255,255,0.55) !important;
+}
+
+/* FIX: Chrome autofill suka bikin jadi putih */
+.auth-input:-webkit-autofill,
+.auth-input:-webkit-autofill:hover,
+.auth-input:-webkit-autofill:focus,
+.auth-input:-webkit-autofill:active {
+  -webkit-text-fill-color: #ffffff !important;
+  caret-color: #ffffff !important;
+  -webkit-box-shadow: 0 0 0px 1000px #a89a94 inset !important;
+  box-shadow: 0 0 0px 1000px #a89a94 inset !important;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+/* =============================
+   BUTTON
+============================= */
+.auth-btn {
+  width: 100%;
+  margin-top: 8px;
+  padding: 13px 18px;
+  border-radius: 999px;
+  border: none;
+  background: #ffffff;
+  color: #2f2f2f;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.auth-btn:hover { opacity: 0.96; }
+
+/* =============================
+   FOOTER
+============================= */
+.auth-footer {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255,255,255,0.9);
+}
+
+.auth-footer a {
+  color: #1d4ed8;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.auth-footer a:hover { text-decoration: underline; }
+
+.auth-home {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255,255,255,0.85);
+}
+
+/* =============================
+   RESPONSIVE
+============================= */
+@media (max-width: 900px) {
+  .auth-grid { grid-template-columns: 1fr; }
+  .auth-left { display: none; }
+  .auth-panel { width: 100%; }
+}
