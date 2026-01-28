@@ -4,11 +4,6 @@
 
 @section('content')
 <style>
-  /* ===========================================
-     Scoped styles: hanya untuk halaman kegiatan
-     Tidak mengubah sidebar/menu layout
-     =========================================== */
-
   .keg-page{
     padding: 18px;
   }
@@ -23,26 +18,27 @@
 
   .keg-topbar{
     display:flex;
-    align-items:flex-start;
+    align-items:center;
     justify-content:space-between;
     gap: 16px;
-    padding: 18px 18px 14px 18px;
+    padding: 16px 18px;
     border-bottom: 1px solid #eef1f6;
-    background: linear-gradient(180deg,#ffffff 0%, #fbfcff 100%);
+    background: #fff;
   }
 
   .keg-title{
     margin:0;
     font-size: 22px;
-    font-weight: 800;
+    font-weight: 600;
     color:#101828;
-    letter-spacing: -0.02em;
+    letter-spacing: 0;
   }
 
   .keg-subtitle{
-    margin: 6px 0 0 0;
+    margin: 4px 0 0 0;
     font-size: 13px;
     color:#667085;
+    font-weight: 400;
   }
 
   .keg-actions{
@@ -71,8 +67,8 @@
   }
 
   .keg-search input:focus{
-    border-color:#c7d2fe;
-    box-shadow: 0 0 0 4px rgba(99,102,241,.12);
+    border-color:#cbd5e1;
+    box-shadow: 0 0 0 3px rgba(148,163,184,.25);
   }
 
   .keg-search svg{
@@ -93,7 +89,7 @@
     padding: 0 14px;
     border-radius: 10px;
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 600;
     text-decoration: none;
     border: 1px solid transparent;
     transition: .15s ease;
@@ -116,14 +112,14 @@
   .keg-btn--cetak:hover{background:#f9fafb;}
 
   .keg-alert{
-    margin: 14px 0 0 0;
-    padding: 12px 14px;
+    margin: 14px 18px 0 18px;
+    padding: 10px 12px;
     border-radius: 12px;
     border: 1px solid #abefc6;
     background: #ecfdf3;
     color: #027a48;
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 500;
   }
 
   .keg-table-wrap{
@@ -140,16 +136,17 @@
 
   .keg-table thead th{
     text-align:left;
-    font-size: 11px;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color:#667085;
+    font-size: 13px;
+    text-transform: none;
+    letter-spacing: 0;
+    color:#475467;
     background:#fbfcff;
     padding: 12px 16px;
     border-bottom: 1px solid #eef1f6;
     position: sticky;
     top: 0;
     z-index: 1;
+    font-weight: 600;
   }
 
   .keg-table tbody td{
@@ -158,6 +155,7 @@
     font-size: 13px;
     color:#101828;
     vertical-align: middle;
+    font-weight: 400;
   }
 
   .keg-table tbody tr:nth-child(even){
@@ -170,17 +168,18 @@
 
   .keg-muted{
     color:#667085;
+    font-weight: 400;
   }
 
   .keg-time{
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     font-variant-numeric: tabular-nums;
     color:#111827;
     white-space: nowrap;
+    font-family: inherit;
   }
 
   .keg-activity{
-    font-weight: 600;
+    font-weight: 500;
     color:#101828;
   }
 
@@ -191,12 +190,11 @@
     padding: 6px 10px;
     border-radius: 999px;
     font-size: 12px;
-    font-weight: 800;
+    font-weight: 600;
     border: 1px solid transparent;
     white-space: nowrap;
   }
 
-  /* status default */
   .keg-badge--neutral{
     background:#f2f4f7;
     color:#344054;
@@ -217,7 +215,7 @@
 
   .keg-link{
     color:#111827;
-    font-weight: 800;
+    font-weight: 600;
     text-decoration: none;
     border-bottom: 1px dashed #cbd5e1;
     padding-bottom: 1px;
@@ -228,6 +226,7 @@
     text-align:center;
     color:#667085;
     padding: 18px 16px;
+    font-weight: 400;
   }
 
   .keg-footer{
@@ -243,16 +242,14 @@
     font-size: 13px;
   }
 
-  /* Pagination spacing */
   .keg-pagination{
-    margin-top: 14px;
-    padding: 0 6px 16px 6px;
+    margin-top: 12px;
+    padding: 0 10px 16px 10px;
   }
 </style>
 
 <div class="keg-page">
   <div class="keg-card">
-    {{-- TOPBAR --}}
     <div class="keg-topbar">
       <div>
         <h1 class="keg-title">Laporan Kegiatan</h1>
@@ -260,13 +257,12 @@
       </div>
 
       <div class="keg-actions">
-        {{-- Search filter (client-side) --}}
         <div class="keg-search">
           <svg viewBox="0 0 24 24" fill="none">
             <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2"/>
             <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
           </svg>
-          <input id="kegSearch" type="text" placeholder="Cari tanggal / aktivitas / status..." />
+          <input id="kegSearch" type="text" placeholder="Cari tanggal, aktivitas, atau status..." />
         </div>
 
         <a href="{{ route('mahasiswa.kegiatan.create') }}" class="keg-btn keg-btn--tambah">Tambah</a>
@@ -274,12 +270,10 @@
       </div>
     </div>
 
-    {{-- ALERT --}}
     @if(session('success'))
       <div class="keg-alert">{{ session('success') }}</div>
     @endif
 
-    {{-- TABLE --}}
     <div class="keg-table-wrap">
       <table class="keg-table" id="kegTable">
         <thead>
@@ -299,7 +293,6 @@
               $statusRaw = (string)($k->status ?? '');
               $status = strtolower(trim($statusRaw));
 
-              // mapping badge style
               if (in_array($status, ['approved', 'disetujui', 'approve'])) {
                   $badgeClass = 'keg-badge--success';
                   $label = 'Approved';
@@ -340,7 +333,6 @@
       </table>
     </div>
 
-    {{-- FOOTER --}}
     <div class="keg-footer">
       <span class="keg-muted">
         Total data: {{ method_exists($kegiatans, 'total') ? $kegiatans->total() : $kegiatans->count() }}
@@ -348,7 +340,6 @@
       <span class="keg-muted">Terakhir diperbarui: {{ now()->format('d-m-Y H:i') }}</span>
     </div>
 
-    {{-- PAGINATION --}}
     <div class="keg-pagination">
       {{ $kegiatans->links() }}
     </div>
@@ -356,7 +347,6 @@
 </div>
 
 <script>
-  // Search filter realtime (client-side)
   (function () {
     const input = document.getElementById('kegSearch');
     const table = document.getElementById('kegTable');
@@ -367,9 +357,7 @@
       const rows = table.querySelectorAll('tbody tr');
 
       rows.forEach(row => {
-        // skip row empty
         if (row.querySelector('.keg-empty')) return;
-
         const text = row.innerText.toLowerCase();
         row.style.display = text.includes(q) ? '' : 'none';
       });
@@ -377,4 +365,3 @@
   })();
 </script>
 @endsection
-  

@@ -224,7 +224,7 @@
     'Pelaksanaan program keselamatan kerja',
     'Pemeliharaan keselamatan alat, bahan, dan lingkungan',
     'Kewajaran penampilan dan berpakaian',
-    'Adaptasi dengan situasi dan kondisi tempat praktek',
+    'Hasil Evaluasi',
   ];
 
   $nilaiArr = $penilaian->nilai ?? [];

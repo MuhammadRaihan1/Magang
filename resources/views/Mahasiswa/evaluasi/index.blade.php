@@ -4,11 +4,6 @@
 
 @section('content')
 <style>
-  /* ============================
-     Scoped untuk halaman evaluasi
-     Tidak mengubah sidebar/menu
-     ============================ */
-
   .ev-page { padding: 18px; }
 
   .ev-card{
@@ -22,25 +17,26 @@
   .ev-topbar{
     display:flex;
     justify-content:space-between;
-    align-items:flex-start;
+    align-items:center;
     gap:16px;
-    padding:18px 18px 14px;
+    padding:16px 18px;
     border-bottom:1px solid #eef1f6;
-    background:linear-gradient(180deg,#ffffff 0%, #fbfcff 100%);
+    background:#fff;
   }
 
   .ev-title{
     margin:0;
     font-size:22px;
-    font-weight:800;
+    font-weight:600;
     color:#101828;
-    letter-spacing:-.02em;
+    letter-spacing:0;
   }
 
   .ev-subtitle{
-    margin:6px 0 0;
+    margin:4px 0 0;
     font-size:13px;
     color:#667085;
+    font-weight:400;
   }
 
   .ev-actions{
@@ -66,8 +62,8 @@
   }
 
   .ev-search input:focus{
-    border-color:#c7d2fe;
-    box-shadow:0 0 0 4px rgba(99,102,241,.12);
+    border-color:#cbd5e1;
+    box-shadow:0 0 0 3px rgba(148,163,184,.25);
   }
 
   .ev-search svg{
@@ -81,13 +77,13 @@
 
   .ev-alert{
     margin:14px 18px 0;
-    padding:12px 14px;
+    padding:10px 12px;
     border-radius:12px;
     border:1px solid #abefc6;
     background:#ecfdf3;
     color:#027a48;
     font-size:13px;
-    font-weight:600;
+    font-weight:500;
   }
 
   .ev-table-wrap{ width:100%; overflow-x:auto; }
@@ -101,16 +97,17 @@
 
   .ev-table thead th{
     text-align:left;
-    font-size:11px;
-    letter-spacing:.08em;
-    text-transform:uppercase;
-    color:#667085;
+    font-size:13px;
+    text-transform:none;
+    letter-spacing:0;
+    color:#475467;
     background:#fbfcff;
     padding:12px 16px;
     border-bottom:1px solid #eef1f6;
     position:sticky;
     top:0;
     z-index:1;
+    font-weight:600;
   }
 
   .ev-table tbody td{
@@ -119,14 +116,15 @@
     font-size:13px;
     color:#101828;
     vertical-align:middle;
+    font-weight:400;
   }
 
   .ev-table tbody tr:nth-child(even){ background:#fcfcfd; }
   .ev-table tbody tr:hover{ background:#f9fafb; }
 
-  .ev-muted{ color:#667085; }
+  .ev-muted{ color:#667085; font-weight:400; }
 
-  .ev-name{ font-weight:700; color:#101828; }
+  .ev-name{ font-weight:500; color:#101828; }
 
   .ev-badge{
     display:inline-flex;
@@ -135,18 +133,16 @@
     padding:6px 10px;
     border-radius:999px;
     font-size:12px;
-    font-weight:800;
-    border:1px solid transparent;
+    font-weight:600;
+    border:1px solid #e4e7ec;
+    background:#f2f4f7;
+    color:#344054;
     white-space:nowrap;
   }
 
-  .ev-badge--neutral{ background:#f2f4f7; color:#344054; border-color:#e4e7ec; }
-  .ev-badge--success{ background:#ecfdf3; color:#027a48; border-color:#abefc6; }
-  .ev-badge--warning{ background:#fffaeb; color:#b54708; border-color:#fedf89; }
-
   .ev-link{
     color:#111827;
-    font-weight:800;
+    font-weight:600;
     text-decoration:none;
     border-bottom:1px dashed #cbd5e1;
     padding-bottom:1px;
@@ -157,6 +153,7 @@
     text-align:center;
     color:#667085;
     padding:18px 16px;
+    font-weight:400;
   }
 
   .ev-footer{
@@ -169,33 +166,23 @@
   }
 
   .ev-pagination{
-    padding: 0 6px 16px 6px;
+    padding: 0 10px 16px 10px;
   }
 </style>
 
 @php
-  /**
-   * Helper kecil buat nampilin nama supervisor dengan aman:
-   * - Relasi object: $e->supervisor->name
-   * - JSON/array: $e->supervisor['name'] / $e->supervisor->name
-   * - String: langsung tampil
-   */
   function evSupervisorName($supervisor) {
       if (is_null($supervisor)) return '-';
 
-      // kalau relasi / object
       if (is_object($supervisor)) {
           return $supervisor->name ?? (method_exists($supervisor, '__toString') ? (string)$supervisor : '-');
       }
 
-      // kalau array (hasil cast json)
       if (is_array($supervisor)) {
           return $supervisor['name'] ?? '-';
       }
 
-      // kalau string
       if (is_string($supervisor)) {
-          // kalau string-nya JSON, coba decode ambil name
           $decoded = json_decode($supervisor, true);
           if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
               return $decoded['name'] ?? '-';
@@ -209,7 +196,6 @@
 
 <div class="ev-page">
   <div class="ev-card">
-
     <div class="ev-topbar">
       <div>
         <h1 class="ev-title">Hasil Evaluasi</h1>
@@ -222,7 +208,7 @@
             <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2"/>
             <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
           </svg>
-          <input id="evSearch" type="text" placeholder="Cari tanggal / supervisor / nilai..." />
+          <input id="evSearch" type="text" placeholder="Cari tanggal, supervisor, atau nilai..." />
         </div>
       </div>
     </div>
@@ -250,32 +236,19 @@
                     ? $evaluasis->firstItem() + $i
                     : $i + 1;
 
-              // pakai created_at / tanggal kalau ada
               $tgl = optional($e->tanggal)->format('d-m-Y') ?? optional($e->created_at)->format('d-m-Y') ?? '-';
 
-              // ambil supervisor name aman
-              // prioritas: relasi supervisor (kalau ada), kalau tidak ada pakai attribute supervisor
               $supName = evSupervisorName($e->supervisor ?? null);
 
-              // nilai badge
               $nilai = $e->nilai;
-              if ($nilai === null || $nilai === '' || $nilai === '-') {
-                  $badgeClass = 'ev-badge--neutral';
-                  $nilaiLabel = '-';
-              } else {
-                  if (is_numeric($nilai) && $nilai >= 85) $badgeClass = 'ev-badge--success';
-                  elseif (is_numeric($nilai) && $nilai >= 70) $badgeClass = 'ev-badge--warning';
-                  else $badgeClass = 'ev-badge--neutral';
-
-                  $nilaiLabel = $nilai;
-              }
+              $nilaiLabel = ($nilai === null || $nilai === '' || $nilai === '-') ? '-' : $nilai;
             @endphp
 
             <tr>
               <td class="ev-muted">{{ $no }}</td>
               <td>{{ $tgl }}</td>
               <td class="ev-name">{{ $supName }}</td>
-              <td><span class="ev-badge {{ $badgeClass }}">{{ $nilaiLabel }}</span></td>
+              <td><span class="ev-badge">{{ $nilaiLabel }}</span></td>
               <td>
                 <a class="ev-link" href="{{ route('mahasiswa.evaluasi.show', $e->id) }}">Detail</a>
               </td>
