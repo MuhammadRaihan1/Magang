@@ -4,7 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>@yield('title', 'Mahasiswa')</title>
+
   @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+  {{-- Bootstrap Icons --}}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
   <style>
     :root{
@@ -45,19 +49,14 @@
     .dash-brand{
       display:flex;
       justify-content:center;
-      align-items:center;
       margin-bottom:22px;
     }
 
     .dash-brand-logo{
       width:190px;
-      height:auto;
     }
 
-    .dash-menu{
-      display:flex;
-      flex-direction:column;
-    }
+    .dash-menu{ display:flex; flex-direction:column; }
 
     .dash-section-title{
       margin:18px 0 10px;
@@ -72,7 +71,7 @@
     .dash-link{
       display:flex;
       align-items:center;
-      gap:10px;
+      gap:12px;
       padding:12px 14px;
       border-radius:14px;
       color: var(--text);
@@ -85,14 +84,14 @@
     .dash-link.active{ background: var(--menu-active); }
 
     .dash-ico{
-      width:18px;
-      display:inline-flex;
+      width:20px;
+      display:flex;
       justify-content:center;
+      font-size:16px;
     }
 
     .dash-sidebar-footer{
       margin-top:auto;
-      padding-top:14px;
     }
 
     .btn-logout{
@@ -104,25 +103,18 @@
       color:#fff;
       font-weight:800;
       cursor:pointer;
-
       display:flex;
       align-items:center;
       justify-content:center;
       gap:10px;
-
-      appearance:none;
-      -webkit-appearance:none;
     }
 
-    .btn-logout:hover{
-      background: var(--danger-hover);
-    }
+    .btn-logout:hover{ background: var(--danger-hover); }
 
     .dash-main{
       flex:1;
       display:flex;
       flex-direction:column;
-      min-width:0;
     }
 
     .dash-topbar{
@@ -130,12 +122,9 @@
       background:#fff;
       display:flex;
       align-items:center;
-      justify-content:space-between;
+      justify-content:flex-end;
       padding:0 22px;
       border-bottom:1px solid rgba(15,23,42,.08);
-    }
-
-    .dash-topbar-name{
       font-weight:800;
     }
 
@@ -146,58 +135,69 @@
 </head>
 
 <body class="dash-page">
-  <div class="dash-wrap">
+<div class="dash-wrap">
 
-    <aside class="dash-sidebar">
-      <div class="dash-brand">
-        <img src="{{ asset('images/bank.png') }}" alt="Bank Nagari" class="dash-brand-logo">
-      </div>
+  {{-- SIDEBAR --}}
+  <aside class="dash-sidebar">
+    <div class="dash-brand">
+      <img src="{{ asset('images/bank.png') }}" class="dash-brand-logo">
+    </div>
 
-      <div class="dash-menu">
-        <a class="dash-link {{ request()->routeIs('mahasiswa.dashboard') ? 'active' : '' }}"
-           href="{{ route('mahasiswa.dashboard') }}">
-          <span class="dash-ico">☰</span>
-          <span>Dashboard</span>
-        </a>
+    <div class="dash-menu">
+      {{-- Dashboard --}}
+      <a class="dash-link {{ request()->routeIs('mahasiswa.dashboard') ? 'active' : '' }}"
+         href="{{ route('mahasiswa.dashboard') }}">
+        <span class="dash-ico"><i class="bi bi-speedometer2"></i></span>
+        <span>Dashboard</span>
+      </a>
 
-        <div class="dash-section-title">LAYANAN</div>
+      <div class="dash-section-title">LAYANAN</div>
 
-        <a class="dash-link {{ request()->routeIs('mahasiswa.kegiatan.*') ? 'active' : '' }}"
-           href="{{ route('mahasiswa.kegiatan.index') }}">
-          <span class="dash-ico">🗒️</span>
-          <span>Laporan Kegiatan</span>
-        </a>
+      {{-- Laporan Kegiatan --}}
+      <a class="dash-link {{ request()->routeIs('mahasiswa.kegiatan.*') ? 'active' : '' }}"
+         href="{{ route('mahasiswa.kegiatan.index') }}">
+        <span class="dash-ico"><i class="bi bi-journal-text"></i></span>
+        <span>Laporan Kegiatan</span>
+      </a>
 
-        <a class="dash-link {{ request()->routeIs('mahasiswa.evaluasi.*') ? 'active' : '' }}"
-           href="{{ route('mahasiswa.evaluasi.index') }}">
-          <span class="dash-ico">📝</span>
-          <span>Evaluasi</span>
-        </a>
-      </div>
+      {{-- Evaluasi --}}
+      <a class="dash-link {{ request()->routeIs('mahasiswa.evaluasi.*') ? 'active' : '' }}"
+         href="{{ route('mahasiswa.evaluasi.index') }}">
+        <span class="dash-ico"><i class="bi bi-clipboard-check"></i></span>
+        <span>Evaluasi</span>
+      </a>
 
-      <div class="dash-sidebar-footer">
-        <form method="POST" action="{{ route('logout') }}">
-          @csrf
-          <button type="submit" class="btn-logout">
-            <span>🚪</span>
-            <span>Logout</span>
-          </button>
-        </form>
-      </div>
-    </aside>
+      {{-- Penilaian --}}
+      <a class="dash-link {{ request()->routeIs('mahasiswa.penilaian.*') ? 'active' : '' }}"
+         href="{{ route('mahasiswa.penilaian.index') }}">
+        <span class="dash-ico"><i class="bi bi-bar-chart-line"></i></span>
+        <span>Penilaian</span>
+      </a>
+    </div>
 
-    <main class="dash-main">
-      <div class="dash-topbar">
-        <div></div>
-        <div class="dash-topbar-name">{{ auth()->user()->name ?? 'Nama' }}</div>
-      </div>
+    {{-- Logout --}}
+    <div class="dash-sidebar-footer">
+      <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button class="btn-logout">
+          <i class="bi bi-box-arrow-right"></i>
+          Logout
+        </button>
+      </form>
+    </div>
+  </aside>
 
-      <div class="dash-content">
-        @yield('content')
-      </div>
-    </main>
+  {{-- CONTENT --}}
+  <main class="dash-main">
+    <div class="dash-topbar">
+      {{ auth()->user()->name }}
+    </div>
 
-  </div>
+    <div class="dash-content">
+      @yield('content')
+    </div>
+  </main>
+
+</div>
 </body>
 </html>
-  

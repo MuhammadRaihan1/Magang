@@ -6,28 +6,28 @@ use App\Http\Controllers\ProfileController;
 
 // ADMIN
 use App\Http\Controllers\Admin\AdminDashboardController;
-use App\Http\Controllers\Admin\MahasiswaController;
-use App\Http\Controllers\Admin\SupervisorController;
+use App\Http\Controllers\Admin\MahasiswaController as AdminMahasiswaController;
+use App\Http\Controllers\Admin\SupervisorController as AdminSupervisorController;
 
 // MAHASISWA
 use App\Http\Controllers\Mahasiswa\MahasiswaDashboardController;
-use App\Http\Controllers\Mahasiswa\KegiatanController;
+use App\Http\Controllers\Mahasiswa\KegiatanController as MahasiswaKegiatanController;
 use App\Http\Controllers\Mahasiswa\EvaluasiController as MahasiswaEvaluasiController;
+use App\Http\Controllers\Mahasiswa\PenilaianController as MahasiswaPenilaianController;
 
 // SUPERVISOR
 use App\Http\Controllers\Supervisor\DashboardController as SupervisorDashboardController;
 use App\Http\Controllers\Supervisor\MahasiswaController as SupervisorMahasiswaController;
-use App\Http\Controllers\Supervisor\EvaluasiController as SupervisorEvaluasiController;
 use App\Http\Controllers\Supervisor\KegiatanController as SupervisorKegiatanController;
+use App\Http\Controllers\Supervisor\EvaluasiController as SupervisorEvaluasiController;
+use App\Http\Controllers\Supervisor\PenilaianController as SupervisorPenilaianController;
 
 /*
 |--------------------------------------------------------------------------
 | HOME
 |--------------------------------------------------------------------------
 */
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', fn () => view('home'))->name('home');
 
 require __DIR__ . '/auth.php';
 
@@ -81,21 +81,21 @@ Route::middleware(['auth', 'role:admin'])
             return redirect('/login');
         })->name('logout');
 
-        // Mahasiswa
-        Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa.index');
-        Route::get('/mahasiswa/create', [MahasiswaController::class, 'create'])->name('mahasiswa.create');
-        Route::post('/mahasiswa', [MahasiswaController::class, 'store'])->name('mahasiswa.store');
-        Route::get('/mahasiswa/{user}/edit', [MahasiswaController::class, 'edit'])->name('mahasiswa.edit');
-        Route::put('/mahasiswa/{user}', [MahasiswaController::class, 'update'])->name('mahasiswa.update');
-        Route::delete('/mahasiswa/{user}', [MahasiswaController::class, 'destroy'])->name('mahasiswa.destroy');
+        // Mahasiswa (Admin)
+        Route::get('/mahasiswa', [AdminMahasiswaController::class, 'index'])->name('mahasiswa.index');
+        Route::get('/mahasiswa/create', [AdminMahasiswaController::class, 'create'])->name('mahasiswa.create');
+        Route::post('/mahasiswa', [AdminMahasiswaController::class, 'store'])->name('mahasiswa.store');
+        Route::get('/mahasiswa/{user}/edit', [AdminMahasiswaController::class, 'edit'])->name('mahasiswa.edit');
+        Route::put('/mahasiswa/{user}', [AdminMahasiswaController::class, 'update'])->name('mahasiswa.update');
+        Route::delete('/mahasiswa/{user}', [AdminMahasiswaController::class, 'destroy'])->name('mahasiswa.destroy');
 
-        // Supervisor
-        Route::get('/supervisor', [SupervisorController::class, 'index'])->name('supervisor.index');
-        Route::get('/supervisor/create', [SupervisorController::class, 'create'])->name('supervisor.create');
-        Route::post('/supervisor', [SupervisorController::class, 'store'])->name('supervisor.store');
-        Route::get('/supervisor/{user}/edit', [SupervisorController::class, 'edit'])->name('supervisor.edit');
-        Route::put('/supervisor/{user}', [SupervisorController::class, 'update'])->name('supervisor.update');
-        Route::delete('/supervisor/{user}', [SupervisorController::class, 'destroy'])->name('supervisor.destroy');
+        // Supervisor (Admin)
+        Route::get('/supervisor', [AdminSupervisorController::class, 'index'])->name('supervisor.index');
+        Route::get('/supervisor/create', [AdminSupervisorController::class, 'create'])->name('supervisor.create');
+        Route::post('/supervisor', [AdminSupervisorController::class, 'store'])->name('supervisor.store');
+        Route::get('/supervisor/{user}/edit', [AdminSupervisorController::class, 'edit'])->name('supervisor.edit');
+        Route::put('/supervisor/{user}', [AdminSupervisorController::class, 'update'])->name('supervisor.update');
+        Route::delete('/supervisor/{user}', [AdminSupervisorController::class, 'destroy'])->name('supervisor.destroy');
     });
 
 /*
@@ -110,16 +110,20 @@ Route::middleware(['auth', 'role:mahasiswa'])
 
         Route::get('/dashboard', [MahasiswaDashboardController::class, 'index'])->name('dashboard');
 
-        // Laporan Kegiatan
-        Route::get('/laporan-kegiatan', [KegiatanController::class, 'index'])->name('kegiatan.index');
-        Route::get('/laporan-kegiatan/tambah', [KegiatanController::class, 'create'])->name('kegiatan.create');
-        Route::post('/laporan-kegiatan', [KegiatanController::class, 'store'])->name('kegiatan.store');
-        Route::get('/laporan-kegiatan/{kegiatan}', [KegiatanController::class, 'show'])->name('kegiatan.show');
-        Route::get('/laporan-kegiatan-cetak', [KegiatanController::class, 'print'])->name('kegiatan.print');
+        // Laporan Kegiatan (Mahasiswa)
+        Route::get('/laporan-kegiatan', [MahasiswaKegiatanController::class, 'index'])->name('kegiatan.index');
+        Route::get('/laporan-kegiatan/tambah', [MahasiswaKegiatanController::class, 'create'])->name('kegiatan.create');
+        Route::post('/laporan-kegiatan', [MahasiswaKegiatanController::class, 'store'])->name('kegiatan.store');
+        Route::get('/laporan-kegiatan/{kegiatan}', [MahasiswaKegiatanController::class, 'show'])->name('kegiatan.show');
+        Route::get('/laporan-kegiatan-cetak', [MahasiswaKegiatanController::class, 'print'])->name('kegiatan.print');
 
         // Hasil Evaluasi (Mahasiswa)
         Route::get('/evaluasi', [MahasiswaEvaluasiController::class, 'index'])->name('evaluasi.index');
         Route::get('/evaluasi/{evaluasi}', [MahasiswaEvaluasiController::class, 'show'])->name('evaluasi.show');
+
+        // Hasil Penilaian (Mahasiswa)
+        Route::get('/penilaian', [MahasiswaPenilaianController::class, 'index'])->name('penilaian.index');
+        Route::get('/penilaian/{penilaian}', [MahasiswaPenilaianController::class, 'show'])->name('penilaian.show');
     });
 
 /*
@@ -134,17 +138,27 @@ Route::middleware(['auth', 'role:supervisor'])
 
         Route::get('/dashboard', [SupervisorDashboardController::class, 'index'])->name('dashboard');
 
-        // Mahasiswa bimbingan
+        // Mahasiswa bimbingan (Supervisor)
         Route::get('/mahasiswa', [SupervisorMahasiswaController::class, 'index'])->name('mahasiswa.index');
 
-        // Laporan kegiatan mahasiswa (pending/riwayat + detail + approve/reject)
+        // Kegiatan Mahasiswa (Supervisor)
         Route::get('/kegiatan', [SupervisorKegiatanController::class, 'index'])->name('kegiatan.index');
         Route::get('/kegiatan/{kegiatan}', [SupervisorKegiatanController::class, 'show'])->name('kegiatan.show');
         Route::patch('/kegiatan/{kegiatan}/approve', [SupervisorKegiatanController::class, 'approve'])->name('kegiatan.approve');
         Route::patch('/kegiatan/{kegiatan}/reject', [SupervisorKegiatanController::class, 'reject'])->name('kegiatan.reject');
 
-        // Evaluasi
+        // Evaluasi (Supervisor)
         Route::get('/evaluasi', [SupervisorEvaluasiController::class, 'index'])->name('evaluasi.index');
         Route::get('/evaluasi/{mahasiswa}', [SupervisorEvaluasiController::class, 'create'])->name('evaluasi.create');
         Route::post('/evaluasi/{mahasiswa}', [SupervisorEvaluasiController::class, 'store'])->name('evaluasi.store');
+
+        // Penilaian (Supervisor)
+        Route::get('/penilaian', [SupervisorPenilaianController::class, 'index'])->name('penilaian.index');
+        Route::get('/penilaian/{mahasiswa}/create', [SupervisorPenilaianController::class, 'create'])->name('penilaian.create');
+        Route::post('/penilaian/{mahasiswa}', [SupervisorPenilaianController::class, 'store'])->name('penilaian.store');
+        Route::get('/penilaian/{mahasiswa}', [SupervisorPenilaianController::class, 'show'])->name('penilaian.show');
+
+        // ✅ EDIT + UPDATE Penilaian (Supervisor)
+        Route::get('/penilaian/{mahasiswa}/edit', [SupervisorPenilaianController::class, 'edit'])->name('penilaian.edit');
+        Route::put('/penilaian/{mahasiswa}', [SupervisorPenilaianController::class, 'update'])->name('penilaian.update');
     });

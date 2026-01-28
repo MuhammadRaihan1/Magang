@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
-
     protected $fillable = [
         'name',
         'email',
@@ -23,20 +22,27 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected function casts(): array
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
+    public function penilaians(): HasMany
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasMany(Penilaian::class, 'mahasiswa_id');
     }
 
-    public function supervisor()
+    public function penilaianTerakhir(): HasOne
+    {
+        return $this->hasOne(Penilaian::class, 'mahasiswa_id')->latestOfMany();
+    }
+
+    public function supervisor(): BelongsTo
     {
         return $this->belongsTo(User::class, 'supervisor_id');
     }
 
-    public function mahasiswaBimbingan()
+    public function mahasiswaBimbingan(): HasMany
     {
         return $this->hasMany(User::class, 'supervisor_id');
     }
