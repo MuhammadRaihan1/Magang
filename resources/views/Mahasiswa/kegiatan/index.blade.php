@@ -4,256 +4,237 @@
 
 @section('content')
 <style>
+  body{
+    font-family:'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  /* PAGE */
   .keg-page{
-    padding: 18px;
+    padding:24px;
+    width:100%;
   }
 
+  /* CARD */
   .keg-card{
-    background:#fff;
-    border: 1px solid #eef1f6;
-    border-radius: 14px;
-    box-shadow: 0 10px 26px rgba(16,24,40,.08);
-    overflow: hidden;
+    width:100%;
+    background:#ffffff;
+    border-radius:20px;
+    box-shadow:0 22px 45px rgba(15,23,42,.08);
+    overflow:hidden;
   }
 
+  /* HEADER (PUTIH, NO BIRU) */
   .keg-topbar{
     display:flex;
-    align-items:center;
     justify-content:space-between;
-    gap: 16px;
-    padding: 16px 18px;
-    border-bottom: 1px solid #eef1f6;
-    background: #fff;
+    align-items:center;
+    gap:18px;
+    padding:22px 26px;
+    border-bottom:1px solid #e5e7eb;
+    background:#fff;
   }
 
   .keg-title{
     margin:0;
-    font-size: 22px;
-    font-weight: 600;
-    color:#101828;
-    letter-spacing: 0;
+    font-size:28px;
+    font-weight:900;
+    color:#0f172a;
+    letter-spacing:-.02em;
   }
 
   .keg-subtitle{
-    margin: 4px 0 0 0;
-    font-size: 13px;
-    color:#667085;
-    font-weight: 400;
+    margin-top:6px;
+    font-size:14px;
+    color:#64748b;
+    font-weight:400;
   }
 
   .keg-actions{
     display:flex;
+    gap:12px;
     align-items:center;
-    gap: 10px;
-    flex-wrap: wrap;
-    justify-content:flex-end;
+    flex-wrap:wrap;
   }
 
+  /* SEARCH */
   .keg-search{
-    position: relative;
-    min-width: 260px;
+    position:relative;
+    min-width:280px;
   }
 
   .keg-search input{
     width:100%;
-    height: 38px;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    padding: 0 12px 0 36px;
-    outline: none;
-    font-size: 13px;
-    color:#101828;
-    background:#fff;
+    height:40px;
+    border-radius:999px;
+    border:1px solid #e5e7eb;
+    padding:0 16px 0 42px;
+    font-size:14px;
   }
 
   .keg-search input:focus{
-    border-color:#cbd5e1;
-    box-shadow: 0 0 0 3px rgba(148,163,184,.25);
+    outline:none;
+    border-color:#94a3b8;
+    box-shadow:0 0 0 .2rem rgba(148,163,184,.25);
   }
 
   .keg-search svg{
     position:absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 16px;
-    height: 16px;
-    color: #98a2b3;
+    left:14px;
+    top:50%;
+    transform:translateY(-50%);
+    width:16px;
+    color:#94a3b8;
   }
 
+  /* BUTTON */
   .keg-btn{
+    height:40px;
+    padding:0 22px;
+    border-radius:999px;
+    font-size:14px;
+    font-weight:700;
+    text-decoration:none;
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    height: 38px;
-    padding: 0 14px;
-    border-radius: 10px;
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: none;
-    border: 1px solid transparent;
-    transition: .15s ease;
-    user-select:none;
-    cursor:pointer;
+    transition:.15s ease;
   }
 
   .keg-btn--tambah{
-    background:#111827;
+    background:#2563eb;
     color:#fff;
-    border-color:#111827;
   }
-  .keg-btn--tambah:hover{opacity:.92;}
+  .keg-btn--tambah:hover{background:#1e40af;}
 
   .keg-btn--cetak{
     background:#fff;
-    color:#111827;
-    border-color:#e5e7eb;
+    color:#2563eb;
+    border:2px solid #2563eb;
   }
-  .keg-btn--cetak:hover{background:#f9fafb;}
+  .keg-btn--cetak:hover{
+    background:#2563eb;
+    color:#fff;
+  }
 
+  /* ALERT */
   .keg-alert{
-    margin: 14px 18px 0 18px;
-    padding: 10px 12px;
-    border-radius: 12px;
-    border: 1px solid #abefc6;
-    background: #ecfdf3;
-    color: #027a48;
-    font-size: 13px;
-    font-weight: 500;
+    margin:16px 26px 0;
+    padding:14px 18px;
+    border-radius:14px;
+    background:#ecfeff;
+    color:#0f172a;
+    border-left:6px solid #2563eb;
+    font-size:14px;
+    font-weight:600;
   }
 
+  /* TABLE */
   .keg-table-wrap{
-    width: 100%;
-    overflow-x: auto;
+    overflow-x:auto;
   }
 
-  .keg-table{
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    min-width: 860px;
+  table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    min-width:900px;
   }
 
-  .keg-table thead th{
-    text-align:left;
-    font-size: 13px;
-    text-transform: none;
-    letter-spacing: 0;
-    color:#475467;
-    background:#fbfcff;
-    padding: 12px 16px;
-    border-bottom: 1px solid #eef1f6;
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    font-weight: 600;
+  /* === BIRU DIPINDAH KE SINI & DIPUDARKAN === */
+  thead tr{
+    background: linear-gradient(
+      180deg,
+      #eef2ff 0%,
+      #e0e7ff 100%
+    );
   }
 
-  .keg-table tbody td{
-    padding: 14px 16px;
-    border-bottom: 1px solid #f0f2f6;
-    font-size: 13px;
-    color:#101828;
-    vertical-align: middle;
-    font-weight: 400;
+  thead th{
+    padding:16px;
+    font-size:12.5px;
+    font-weight:800;
+    color:#1e293b;
+    text-transform:uppercase;
+    letter-spacing:.08em;
   }
 
-  .keg-table tbody tr:nth-child(even){
-    background:#fcfcfd;
+  thead th:first-child{ border-top-left-radius:20px; }
+  thead th:last-child{ border-top-right-radius:20px; }
+
+  tbody td{
+    padding:18px;
+    border-top:1px solid #e5e7eb;
+    font-size:14px;
+    font-weight:400;
+    color:#0f172a;
+    vertical-align:middle;
   }
 
-  .keg-table tbody tr:hover{
-    background:#f9fafb;
+  tbody tr:hover{
+    background:#f8fafc;
   }
 
-  .keg-muted{
-    color:#667085;
-    font-weight: 400;
-  }
+  .keg-muted{ color:#64748b; }
+  .keg-time{ font-variant-numeric: tabular-nums; }
+  .keg-activity{ font-weight:500; }
 
-  .keg-time{
-    font-variant-numeric: tabular-nums;
-    color:#111827;
-    white-space: nowrap;
-    font-family: inherit;
-  }
-
-  .keg-activity{
-    font-weight: 500;
-    color:#101828;
-  }
-
+  /* BADGE */
   .keg-badge{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    padding: 6px 10px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 600;
-    border: 1px solid transparent;
-    white-space: nowrap;
+    padding:6px 16px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:700;
+    border:1px solid transparent;
   }
 
   .keg-badge--neutral{
-    background:#f2f4f7;
-    color:#344054;
-    border-color:#e4e7ec;
+    background:#f1f5f9;
+    color:#475569;
+    border-color:#e2e8f0;
   }
 
   .keg-badge--success{
-    background:#ecfdf3;
-    color:#027a48;
-    border-color:#abefc6;
+    background:#ecfdf5;
+    color:#065f46;
+    border-color:#a7f3d0;
   }
 
   .keg-badge--danger{
-    background:#fef3f2;
-    color:#b42318;
-    border-color:#fecdca;
+    background:#fef2f2;
+    color:#991b1b;
+    border-color:#fecaca;
   }
 
   .keg-link{
-    color:#111827;
-    font-weight: 600;
-    text-decoration: none;
-    border-bottom: 1px dashed #cbd5e1;
-    padding-bottom: 1px;
+    font-weight:700;
+    color:#2563eb;
+    text-decoration:none;
   }
-  .keg-link:hover{opacity:.85;}
+  .keg-link:hover{text-decoration:underline;}
 
-  .keg-empty{
-    text-align:center;
-    color:#667085;
-    padding: 18px 16px;
-    font-weight: 400;
-  }
-
+  /* FOOTER */
   .keg-footer{
     display:flex;
-    justify-content: space-between;
+    justify-content:space-between;
     align-items:center;
-    gap: 10px;
-    padding: 12px 16px;
-    background:#fff;
-  }
-
-  .keg-footer .keg-muted{
-    font-size: 13px;
+    padding:14px 26px;
+    font-size:13px;
+    color:#64748b;
   }
 
   .keg-pagination{
-    margin-top: 12px;
-    padding: 0 10px 16px 10px;
+    padding:0 26px 22px;
   }
 </style>
 
 <div class="keg-page">
   <div class="keg-card">
+
+    {{-- HEADER --}}
     <div class="keg-topbar">
       <div>
         <h1 class="keg-title">Laporan Kegiatan</h1>
-        <p class="keg-subtitle">Daftar aktivitas harian dan status verifikasi supervisor.</p>
+        <p class="keg-subtitle">Daftar aktivitas harian dan status verifikasi supervisor</p>
       </div>
 
       <div class="keg-actions">
@@ -262,7 +243,7 @@
             <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2"/>
             <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
           </svg>
-          <input id="kegSearch" type="text" placeholder="Cari tanggal, aktivitas, atau status..." />
+          <input id="kegSearch" type="text" placeholder="Cari kegiatan..." />
         </div>
 
         <a href="{{ route('mahasiswa.kegiatan.create') }}" class="keg-btn keg-btn--tambah">Tambah</a>
@@ -274,59 +255,45 @@
       <div class="keg-alert">{{ session('success') }}</div>
     @endif
 
+    {{-- TABLE --}}
     <div class="keg-table-wrap">
-      <table class="keg-table" id="kegTable">
+      <table id="kegTable">
         <thead>
           <tr>
-            <th style="width:80px;">No</th>
-            <th style="width:160px;">Tanggal</th>
-            <th style="width:230px;">Masuk - Pulang</th>
+            <th>No</th>
+            <th>Tanggal</th>
+            <th>Masuk - Pulang</th>
             <th>Aktivitas</th>
-            <th style="width:220px;">Verifikasi Supervisor</th>
-            <th style="width:120px;">Detail</th>
+            <th>Verifikasi</th>
+            <th>Detail</th>
           </tr>
         </thead>
 
         <tbody>
           @forelse($kegiatans as $i => $k)
             @php
-              $statusRaw = (string)($k->status ?? '');
-              $status = strtolower(trim($statusRaw));
+              $status = strtolower($k->status ?? '');
+              if($status == 'approved'){ $badge='keg-badge--success'; $label='Approved'; }
+              elseif($status == 'rejected'){ $badge='keg-badge--danger'; $label='Rejected'; }
+              else{ $badge='keg-badge--neutral'; $label='Pending'; }
 
-              if (in_array($status, ['approved', 'disetujui', 'approve'])) {
-                  $badgeClass = 'keg-badge--success';
-                  $label = 'Approved';
-              } elseif (in_array($status, ['rejected', 'ditolak', 'reject'])) {
-                  $badgeClass = 'keg-badge--danger';
-                  $label = 'Rejected';
-              } else {
-                  $badgeClass = 'keg-badge--neutral';
-                  $label = $statusRaw !== '' ? $statusRaw : 'Pending';
-              }
-
-              $no = method_exists($kegiatans, 'firstItem') && $kegiatans->firstItem()
-                    ? $kegiatans->firstItem() + $i
-                    : $i + 1;
-
-              $masuk = $k->jam_masuk ? substr($k->jam_masuk, 0, 5) : '-';
-              $pulang = $k->jam_pulang ? substr($k->jam_pulang, 0, 5) : '-';
+              $no = method_exists($kegiatans,'firstItem') && $kegiatans->firstItem()
+                    ? $kegiatans->firstItem() + $i : $i + 1;
             @endphp
 
             <tr>
               <td class="keg-muted">{{ $no }}</td>
-              <td>{{ optional($k->tanggal)->format('d-m-Y') ?? '-' }}</td>
-              <td class="keg-time">{{ $masuk }} — {{ $pulang }}</td>
-              <td class="keg-activity">{{ \Illuminate\Support\Str::limit($k->aktivitas, 60) }}</td>
-              <td>
-                <span class="keg-badge {{ $badgeClass }}">{{ $label }}</span>
-              </td>
-              <td>
-                <a class="keg-link" href="{{ route('mahasiswa.kegiatan.show', $k->id) }}">Detail</a>
-              </td>
+              <td>{{ optional($k->tanggal)->format('d-m-Y') }}</td>
+              <td class="keg-time">{{ substr($k->jam_masuk,0,5) }} — {{ substr($k->jam_pulang,0,5) }}</td>
+              <td class="keg-activity">{{ \Illuminate\Support\Str::limit($k->aktivitas,60) }}</td>
+              <td><span class="keg-badge {{ $badge }}">{{ $label }}</span></td>
+              <td><a class="keg-link" href="{{ route('mahasiswa.kegiatan.show',$k->id) }}">Detail</a></td>
             </tr>
           @empty
             <tr>
-              <td colspan="6" class="keg-empty">Belum ada laporan kegiatan.</td>
+              <td colspan="6" class="text-center keg-muted py-4">
+                Belum ada laporan kegiatan.
+              </td>
             </tr>
           @endforelse
         </tbody>
@@ -334,34 +301,23 @@
     </div>
 
     <div class="keg-footer">
-      <span class="keg-muted">
-        Total data: {{ method_exists($kegiatans, 'total') ? $kegiatans->total() : $kegiatans->count() }}
-      </span>
-      <span class="keg-muted">Terakhir diperbarui: {{ now()->format('d-m-Y H:i') }}</span>
+      <span>Total data: {{ method_exists($kegiatans,'total') ? $kegiatans->total() : $kegiatans->count() }}</span>
+      <span>{{ now()->format('d-m-Y H:i') }}</span>
     </div>
 
     <div class="keg-pagination">
       {{ $kegiatans->links() }}
     </div>
+
   </div>
 </div>
 
 <script>
-  (function () {
-    const input = document.getElementById('kegSearch');
-    const table = document.getElementById('kegTable');
-    if (!input || !table) return;
-
-    input.addEventListener('input', function () {
-      const q = this.value.toLowerCase().trim();
-      const rows = table.querySelectorAll('tbody tr');
-
-      rows.forEach(row => {
-        if (row.querySelector('.keg-empty')) return;
-        const text = row.innerText.toLowerCase();
-        row.style.display = text.includes(q) ? '' : 'none';
-      });
+  document.getElementById('kegSearch')?.addEventListener('input', function(){
+    const q = this.value.toLowerCase();
+    document.querySelectorAll('#kegTable tbody tr').forEach(tr=>{
+      tr.style.display = tr.innerText.toLowerCase().includes(q) ? '' : 'none';
     });
-  })();
+  });
 </script>
 @endsection

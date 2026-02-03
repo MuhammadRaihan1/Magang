@@ -4,198 +4,272 @@
 
 @section('content')
 <style>
-  .pen-wrap, .pen-wrap *{
-    font-weight: 400 !important;
+  body{
+    font-family:'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   }
 
-  /* Layout */
-  .page-title{ color:#0f172a; }
-
-  /* Table */
-  .pen-wrap{
-    background:#fff;
-    border:1px solid #e5e7eb;
-    border-radius:14px;
-    overflow:hidden;
-    box-shadow: 0 1px 2px rgba(15,23,42,.06);
+  /* PAGE HEADER */
+  .page-header{
+    margin-bottom:18px;
   }
-  .pen-table{ margin:0; }
-  .pen-table th, .pen-table td{ vertical-align: middle; }
-  .pen-table thead th{
-    background:#f8fafc;
+
+  .page-header h2{
+    margin:0;
+    font-size:28px;
+    font-weight:900;
     color:#0f172a;
-    border-bottom:1px solid #e5e7eb;
-    padding:14px 16px;
+  }
+
+  /* ALERT */
+  .alert-success{
+    background:#ecfeff;
+    color:#0f172a;
+    border-left:6px solid #2563eb;
+    padding:14px 18px;
+    border-radius:12px;
+    margin-bottom:20px;
+    font-weight:600;
+  }
+
+  /* TABLE CARD */
+  .table-card{
+    background:#ffffff;
+    border-radius:20px;
+    box-shadow:0 22px 45px rgba(15,23,42,.08);
+    padding:0;
+  }
+
+  table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+  }
+
+  /* HEADER TABLE */
+  thead tr{
+    background:#c7d2fe;
+  }
+
+  thead th{
+    padding:18px;
     font-size:13px;
+    font-weight:900;
+    color:#1e293b;
+    text-transform:uppercase;
+    letter-spacing:.6px;
+    text-align:left;
   }
-  .pen-table tbody td{
-    padding:16px;
-    border-top:1px solid #eef2f7;
+
+  thead th:first-child{
+    border-top-left-radius:20px;
+    width:70px;
+    text-align:center;
   }
-  .pen-table tbody tr:hover{ background:#fbfdff; }
 
-  /* Name */
-  .mhs-name{ color:#0f172a; line-height:1.2; }
+  thead th:last-child{
+    border-top-right-radius:20px;
+    width:200px;
+    text-align:center;
+  }
 
-  /* Hasil */
+  tbody td{
+    padding:18px;
+    font-size:15px;
+    color:#0f172a;
+    border-top:1px solid #e5e7eb;
+    vertical-align:middle;
+  }
+
+  tbody tr:hover{
+    background:#f8fafc;
+  }
+
+  .mhs-name{
+    font-weight:700;
+  }
+
+  .text-muted{
+    color:#64748b;
+  }
+
+  /* HASIL */
   .hasil-inline{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    gap:10px;
+    gap:12px;
   }
-  .hasil-left{
-    display:flex;
-    align-items:baseline;
-    gap:8px;
-    min-width:0;
-  }
+
   .hasil-label{
-    font-size:12px;
+    font-size:13px;
     color:#64748b;
-    white-space:nowrap;
   }
+
   .hasil-value{
-    font-size:14px;
+    font-size:15px;
     color:#0f172a;
-    font-variant-numeric: tabular-nums;
-    white-space:nowrap;
   }
 
-  /* Badges */
-  .badge-pill{
-    display:inline-flex;
-    align-items:center;
-    padding:6px 10px;
-    border-radius:999px;
-    font-size:12px;
-    border:1px solid transparent;
-    line-height:1;
-    white-space:nowrap;
-  }
-  .badge-muted{ background:#f1f5f9; color:#0f172a; border-color:#e2e8f0; }
-
+  /* BADGE */
   .badge-grade{
     display:inline-flex;
     align-items:center;
     justify-content:center;
     min-width:42px;
     height:26px;
-    padding:0 10px;
+    padding:0 12px;
     border-radius:999px;
     font-size:12px;
-    border:1px solid transparent;
+    border:1px solid #e2e8f0;
+    font-weight:600;
+    background:transparent;
   }
-  .g-a{ background:#ecfdf5; color:#065f46; border-color:#a7f3d0; }
+
+  /* A TANPA BACKGROUND */
+  .g-a{
+    background:transparent;
+    color:#065f46;
+    border-color:#a7f3d0;
+  }
+
   .g-b{ background:#eff6ff; color:#1d4ed8; border-color:#bfdbfe; }
   .g-c{ background:#fffbeb; color:#92400e; border-color:#fde68a; }
   .g-d{ background:#fef2f2; color:#991b1b; border-color:#fecaca; }
   .g-x{ background:#f1f5f9; color:#0f172a; border-color:#e2e8f0; }
 
-  /* Aksi */
+  .badge-muted{
+    padding:6px 14px;
+    border-radius:999px;
+    background:#f1f5f9;
+    color:#475569;
+    font-size:13px;
+    font-weight:600;
+  }
+
+  /* ACTION */
   .aksi-group{
-    display:inline-flex;
-    gap:8px;
+    display:flex;
     justify-content:center;
-    align-items:center;
+    gap:10px;
     flex-wrap:wrap;
   }
-  .btn-clean{
-    border-radius:10px;
-    padding:8px 14px;
-    border:1px solid #e5e7eb;
+
+  .btn-action{
+    padding:7px 18px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:700;
+    text-decoration:none;
+    transition:.15s ease;
+    border:2px solid #2563eb;
+    color:#2563eb;
     background:#fff;
-    color:#0f172a;
+  }
+
+  .btn-action:hover{
+    background:#2563eb;
+    color:#fff;
+  }
+
+  .btn-primary-soft{
+    padding:7px 20px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:700;
+    background:#2563eb;
+    color:#fff;
     text-decoration:none;
   }
-  .btn-clean:hover{
-    background:#f8fafc;
-    border-color:#d1d5db;
-    color:#0f172a;
+
+  .btn-primary-soft:hover{
+    background:#1e40af;
+    color:#fff;
   }
-  .btn-clean-primary{
-    border-radius:10px;
-    padding:8px 14px;
+
+  @media(max-width:768px){
+    thead th,
+    tbody td{
+      padding:14px;
+      font-size:14px;
+    }
+
+    .page-header h2{
+      font-size:24px;
+    }
   }
 </style>
 
-<div class="mb-3">
-  <h2 class="page-title mb-1">Penilaian Mahasiswa</h2>
+<div class="page-header">
+  <h2>Penilaian Akhir Mahasiswa</h2>
 </div>
 
 @if(session('success'))
-  <div class="alert alert-success">{{ session('success') }}</div>
+  <div class="alert-success">
+    {{ session('success') }}
+  </div>
 @endif
 
-<div class="pen-wrap">
-  <div class="table-responsive">
-    <table class="table pen-table">
-      <thead>
+<div class="table-card">
+  <table>
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Mahasiswa</th>
+        <th>Email</th>
+        <th style="width:260px;">Hasil</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @forelse($mahasiswa as $i => $mhs)
+        @php
+          $p = $mhs->penilaianTerakhir;
+          $grade = $p->grade ?? null;
+
+          $gradeClass = 'g-x';
+          if (in_array($grade, ['A','A-'])) $gradeClass = 'g-a';
+          elseif (in_array($grade, ['B+','B','B-'])) $gradeClass = 'g-b';
+          elseif (in_array($grade, ['C+','C','C-'])) $gradeClass = 'g-c';
+          elseif (in_array($grade, ['D','E'])) $gradeClass = 'g-d';
+        @endphp
+
         <tr>
-          <th style="width:70px" class="text-center">No</th>
-          <th>Mahasiswa</th>
-          <th>Email</th>
-          <th style="width:260px">Hasil</th>
-          <th style="width:200px" class="text-center">Aksi</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        @forelse($mahasiswa as $i => $mhs)
-          @php
-            $p = $mhs->penilaianTerakhir;
-            $grade = $p->grade ?? null;
-
-            $gradeClass = 'g-x';
-            if (in_array($grade, ['A','A-'])) $gradeClass = 'g-a';
-            elseif (in_array($grade, ['B+','B','B-'])) $gradeClass = 'g-b';
-            elseif (in_array($grade, ['C+','C','C-'])) $gradeClass = 'g-c';
-            elseif (in_array($grade, ['D','E'])) $gradeClass = 'g-d';
-          @endphp
-
-          <tr>
-            <td class="text-center text-muted">{{ $i + 1 }}</td>
-
-            <td>
-              <div class="mhs-name">{{ $mhs->name }}</div>
-            </td>
-
-            <td class="text-muted">{{ $mhs->email }}</td>
-
-            <td>
-              @if($p)
-                <div class="hasil-inline">
-                  <div class="hasil-left">
-                    <span class="hasil-label">Nilai</span>
-                    <span class="hasil-value">{{ number_format($p->nilai_akhir ?? 0, 2) }}</span>
-                  </div>
-                  <span class="badge-grade {{ $gradeClass }}">{{ $grade ?? '-' }}</span>
+          <td class="text-center text-muted">{{ $i + 1 }}</td>
+          <td class="mhs-name">{{ $mhs->name }}</td>
+          <td class="text-muted">{{ $mhs->email }}</td>
+          <td>
+            @if($p)
+              <div class="hasil-inline">
+                <div>
+                  <span class="hasil-label">Nilai</span>
+                  <span class="hasil-value">{{ number_format($p->nilai_akhir ?? 0, 2) }}</span>
                 </div>
-              @else
-                <span class="badge-pill badge-muted">Belum dinilai</span>
-              @endif
-            </td>
-
-            <td class="text-center">
-              <div class="aksi-group">
-                @if($p)
-                  <a class="btn btn-clean" href="{{ route('supervisor.penilaian.show', $mhs->id) }}">Detail</a>
-                  <a class="btn btn-clean" href="{{ route('supervisor.penilaian.edit', $mhs->id) }}">Edit</a>
-                @else
-                  <a class="btn btn-primary btn-clean-primary" href="{{ route('supervisor.penilaian.create', $mhs->id) }}">Isi Penilaian</a>
-                @endif
+                <span class="badge-grade {{ $gradeClass }}">{{ $grade ?? '-' }}</span>
               </div>
-            </td>
-          </tr>
-        @empty
-          <tr>
-            <td colspan="5" class="text-center text-muted py-4">
-              Data mahasiswa tidak ditemukan.
-            </td>
-          </tr>
-        @endforelse
-      </tbody>
-    </table>
-  </div>
+            @else
+              <span class="badge-muted">Belum dinilai</span>
+            @endif
+          </td>
+          <td class="text-center">
+            <div class="aksi-group">
+              @if($p)
+                <a class="btn-action" href="{{ route('supervisor.penilaian.show', $mhs->id) }}">Detail</a>
+                <a class="btn-action" href="{{ route('supervisor.penilaian.edit', $mhs->id) }}">Edit</a>
+              @else
+                <a class="btn-primary-soft" href="{{ route('supervisor.penilaian.create', $mhs->id) }}">Isi Penilaian</a>
+              @endif
+            </div>
+          </td>
+        </tr>
+      @empty
+        <tr>
+          <td colspan="5" class="text-center py-4 text-muted">
+            Data mahasiswa tidak ditemukan.
+          </td>
+        </tr>
+      @endforelse
+    </tbody>
+  </table>
 </div>
 @endsection

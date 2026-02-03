@@ -58,12 +58,11 @@
   }
 </style>
 
-<h4 class="mb-2">NILAI</h4>
-<p class="text-muted mb-3">Beranda / Tambah Nilai</p>
+<h4 class="mb-2">NILAI AKHIR MAHASISWA</h4>
 
 <div class="mb-4">
-  <b>Nama Lengkap :</b>
-  {{ $mahasiswa->name }} / {{ $mahasiswa->nim ?? '-' }}
+  <b>Nama Mahasiswa Bimbingan :</b>
+  {{ $mahasiswa->name }}
 </div>
 
 <form method="POST" action="{{ route('supervisor.penilaian.store', $mahasiswa->id) }}">

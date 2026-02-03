@@ -4,169 +4,180 @@
 
 @section('content')
 <style>
-  .ev-page { padding: 18px; }
+  body{
+    font-family:'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  }
 
+  /* PAGE */
+  .ev-page{
+    padding:24px;
+    width:100%;
+  }
+
+  /* CARD */
   .ev-card{
-    background:#fff;
-    border:1px solid #eef1f6;
-    border-radius:14px;
-    box-shadow:0 10px 26px rgba(16,24,40,.08);
+    width:100%;
+    background:#ffffff;
+    border-radius:20px;
+    box-shadow:0 22px 45px rgba(15,23,42,.08);
     overflow:hidden;
   }
 
+  /* HEADER */
   .ev-topbar{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    gap:16px;
-    padding:16px 18px;
-    border-bottom:1px solid #eef1f6;
+    gap:18px;
+    padding:22px 26px;
+    border-bottom:1px solid #e5e7eb;
     background:#fff;
   }
 
   .ev-title{
     margin:0;
-    font-size:22px;
-    font-weight:600;
-    color:#101828;
-    letter-spacing:0;
+    font-size:28px;
+    font-weight:900;
+    color:#0f172a;
+    letter-spacing:-.02em;
   }
 
   .ev-subtitle{
-    margin:4px 0 0;
-    font-size:13px;
-    color:#667085;
+    margin-top:6px;
+    font-size:14px;
+    color:#64748b;
     font-weight:400;
   }
 
   .ev-actions{
     display:flex;
+    gap:12px;
     align-items:center;
-    gap:10px;
     flex-wrap:wrap;
-    justify-content:flex-end;
   }
 
-  .ev-search{ position:relative; min-width:260px; }
+  /* SEARCH */
+  .ev-search{
+    position:relative;
+    min-width:280px;
+  }
 
   .ev-search input{
     width:100%;
-    height:38px;
+    height:40px;
+    border-radius:999px;
     border:1px solid #e5e7eb;
-    border-radius:10px;
-    padding:0 12px 0 36px;
-    outline:none;
-    font-size:13px;
-    color:#101828;
-    background:#fff;
+    padding:0 16px 0 42px;
+    font-size:14px;
   }
 
   .ev-search input:focus{
-    border-color:#cbd5e1;
-    box-shadow:0 0 0 3px rgba(148,163,184,.25);
+    outline:none;
+    border-color:#94a3b8;
+    box-shadow:0 0 0 .2rem rgba(148,163,184,.25);
   }
 
   .ev-search svg{
     position:absolute;
-    left:10px;
+    left:14px;
     top:50%;
     transform:translateY(-50%);
-    width:16px; height:16px;
-    color:#98a2b3;
+    width:16px;
+    color:#94a3b8;
   }
 
+  /* ALERT */
   .ev-alert{
-    margin:14px 18px 0;
-    padding:10px 12px;
-    border-radius:12px;
-    border:1px solid #abefc6;
-    background:#ecfdf3;
-    color:#027a48;
-    font-size:13px;
-    font-weight:500;
+    margin:16px 26px 0;
+    padding:14px 18px;
+    border-radius:14px;
+    background:#ecfeff;
+    color:#0f172a;
+    border-left:6px solid #2563eb;
+    font-size:14px;
+    font-weight:600;
   }
 
-  .ev-table-wrap{ width:100%; overflow-x:auto; }
+  /* TABLE */
+  .ev-table-wrap{
+    overflow-x:auto;
+  }
 
   .ev-table{
     width:100%;
     border-collapse:separate;
     border-spacing:0;
-    min-width:820px;
+    min-width:900px;
   }
 
-  .ev-table thead th{
-    text-align:left;
-    font-size:13px;
-    text-transform:none;
-    letter-spacing:0;
-    color:#475467;
-    background:#fbfcff;
-    padding:12px 16px;
-    border-bottom:1px solid #eef1f6;
-    position:sticky;
-    top:0;
-    z-index:1;
-    font-weight:600;
+  thead tr{
+    background: linear-gradient(
+      180deg,
+      #eef2ff 0%,
+      #e0e7ff 100%
+    );
   }
 
-  .ev-table tbody td{
-    padding:14px 16px;
-    border-bottom:1px solid #f0f2f6;
-    font-size:13px;
-    color:#101828;
-    vertical-align:middle;
+  thead th{
+    padding:16px;
+    font-size:12.5px;
+    font-weight:800;
+    color:#1e293b;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+  }
+
+  thead th:first-child{ border-top-left-radius:20px; }
+  thead th:last-child{ border-top-right-radius:20px; }
+
+  tbody td{
+    padding:18px;
+    border-top:1px solid #e5e7eb;
+    font-size:14px;
     font-weight:400;
+    color:#0f172a;
+    vertical-align:middle;
   }
 
-  .ev-table tbody tr:nth-child(even){ background:#fcfcfd; }
-  .ev-table tbody tr:hover{ background:#f9fafb; }
+  tbody tr:hover{
+    background:#f8fafc;
+  }
 
-  .ev-muted{ color:#667085; font-weight:400; }
+  .ev-muted{ color:#64748b; }
+  .ev-name{ font-weight:500; color:#0f172a; }
 
-  .ev-name{ font-weight:500; color:#101828; }
-
+  /* BADGE */
   .ev-badge{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    padding:6px 10px;
+    padding:6px 16px;
     border-radius:999px;
     font-size:12px;
-    font-weight:600;
-    border:1px solid #e4e7ec;
-    background:#f2f4f7;
-    color:#344054;
+    font-weight:700;
+    border:1px solid transparent;
+    background:#f1f5f9;
+    color:#475569;
+    border-color:#e2e8f0;
     white-space:nowrap;
   }
 
   .ev-link{
-    color:#111827;
-    font-weight:600;
+    font-weight:700;
+    color:#2563eb;
     text-decoration:none;
-    border-bottom:1px dashed #cbd5e1;
-    padding-bottom:1px;
   }
-  .ev-link:hover{ opacity:.85; }
+  .ev-link:hover{text-decoration:underline;}
 
-  .ev-empty{
-    text-align:center;
-    color:#667085;
-    padding:18px 16px;
-    font-weight:400;
-  }
-
+  /* FOOTER */
   .ev-footer{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    gap:10px;
-    padding:12px 16px;
-    background:#fff;
+    padding:14px 26px;
+    font-size:13px;
+    color:#64748b;
   }
 
   .ev-pagination{
-    padding: 0 10px 16px 10px;
+    padding:0 26px 22px;
   }
 </style>
 
@@ -196,10 +207,12 @@
 
 <div class="ev-page">
   <div class="ev-card">
+
+    {{-- HEADER --}}
     <div class="ev-topbar">
       <div>
         <h1 class="ev-title">Hasil Evaluasi</h1>
-        <p class="ev-subtitle">Daftar evaluasi dari supervisor dan nilai yang diberikan.</p>
+        <p class="ev-subtitle">Daftar evaluasi dari supervisor dan nilai yang diberikan</p>
       </div>
 
       <div class="ev-actions">
@@ -217,6 +230,7 @@
       <div class="ev-alert">{{ session('success') }}</div>
     @endif
 
+    {{-- TABLE --}}
     <div class="ev-table-wrap">
       <table class="ev-table" id="evTable">
         <thead>
@@ -255,7 +269,9 @@
             </tr>
           @empty
             <tr>
-              <td colspan="5" class="ev-empty">Belum ada evaluasi dari supervisor.</td>
+              <td colspan="5" class="text-center ev-muted py-4">
+                Belum ada evaluasi dari supervisor.
+              </td>
             </tr>
           @endforelse
         </tbody>
@@ -266,12 +282,13 @@
       <span class="ev-muted">
         Total data: {{ method_exists($evaluasis, 'total') ? $evaluasis->total() : $evaluasis->count() }}
       </span>
-      <span class="ev-muted">Terakhir diperbarui: {{ now()->format('d-m-Y H:i') }}</span>
+      <span class="ev-muted">{{ now()->format('d-m-Y H:i') }}</span>
     </div>
 
     <div class="ev-pagination">
       {{ $evaluasis->links() }}
     </div>
+
   </div>
 </div>
 

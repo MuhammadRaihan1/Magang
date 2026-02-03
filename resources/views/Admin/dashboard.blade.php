@@ -4,53 +4,64 @@
 
 @section('content')
 <style>
-  /* Dashboard Admin - Profesional & klik-able */
+  /* =====================
+     DASHBOARD ADMIN
+     ===================== */
+
+  .admin-wrapper{
+    width:100%;
+    padding:10px 0 30px;
+  }
+
+  /* HERO */
   .hero-card{
-    background:#ffffff;
-    border-radius:18px;
-    padding:24px 26px;
+    width:100%;
+    border-radius:22px;
+    padding:3rem 3.5rem;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    gap:18px;
-    box-shadow:0 4px 14px rgba(0,0,0,.06);
+    gap:24px;
+    background: linear-gradient(
+      135deg,
+      #2563eb,
+      #9333ea,
+      #dc2626,
+      #0d9488
+    );
+    background-size:300% 300%;
+    animation: gradientMove 14s ease infinite;
+    color:#fff;
+    box-shadow:0 24px 50px rgba(0,0,0,.18);
   }
 
-  .hero-card h2{
+  .hero-text h2{
     margin:0;
-    font-size:36px;
+    font-size:42px;
     font-weight:900;
-    color:#0f172a;
     line-height:1.15;
   }
 
-  .hero-card h5{
-    margin:10px 0 0;
-    color:rgba(15,23,42,.78);
-    font-weight:800;
-    font-size:19px;
-    letter-spacing:.2px;
+  .hero-text h5{
+    margin-top:12px;
+    font-size:20px;
+    font-weight:600;
+    opacity:.95;
   }
 
   .hero-card img{
-    height:125px;
-    width:auto;
+    height:150px;
   }
 
+  /* GRID */
   .stat-grid{
-    margin-top:22px;
+    margin-top:26px;
     display:grid;
     grid-template-columns:repeat(2, minmax(0, 1fr));
-    gap:18px;
+    gap:22px;
   }
 
-  @media (max-width: 900px){
-    .stat-grid{ grid-template-columns:1fr; }
-    .hero-card{ flex-direction:column; align-items:flex-start; }
-    .hero-card img{ height:110px; }
-  }
-
-  /* link wrapper biar 1 card full bisa diklik */
+  /* CARD STAT */
   .stat-link{
     display:block;
     text-decoration:none;
@@ -58,91 +69,113 @@
   }
 
   .stat-box{
-    border-radius:18px;
-    padding:22px;
-    text-align:center;
-    box-shadow:0 4px 14px rgba(0,0,0,.06);
+    border-radius:22px;
+    padding:28px;
+    min-height:190px;
     position:relative;
-    min-height:170px;
-
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
-    gap:8px;
-
+    gap:10px;
     cursor:pointer;
-    transition:.15s ease;
+    transition:.18s ease;
+    box-shadow:0 10px 28px rgba(16,24,40,.12);
   }
 
   .stat-box:hover{
-    transform: translateY(-2px);
-    box-shadow:0 14px 30px rgba(16,24,40,.14);
+    transform: translateY(-4px);
+    box-shadow:0 18px 40px rgba(16,24,40,.18);
   }
 
   .stat-box.dark{
-    background:#6c757d;
+    background: linear-gradient(135deg,#475569,#64748b);
     color:#fff;
   }
 
   .stat-box.light{
-    background:#fff;
+    background:#ffffff;
     border:1px solid rgba(15,23,42,.12);
     color:#0f172a;
   }
 
   .mini-logo{
     position:absolute;
-    top:14px;
-    left:14px;
-    width:52px; /* dibesarkan dikit */
-    height:auto;
+    top:18px;
+    left:18px;
+    width:56px;
     opacity:.95;
   }
 
   .stat-title{
+    font-size:20px;
     font-weight:900;
-    font-size:18px;
-    margin-top:8px;
   }
 
   .stat-value{
-    font-size:58px;
+    font-size:64px;
     font-weight:900;
     line-height:1;
   }
+
+  /* ANIMASI */
+  @keyframes gradientMove{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+  }
+
+  /* RESPONSIVE */
+  @media(max-width:900px){
+    .hero-card{
+      flex-direction:column;
+      text-align:center;
+      padding:2.5rem 2rem;
+    }
+
+    .hero-card img{
+      height:120px;
+    }
+
+    .stat-grid{
+      grid-template-columns:1fr;
+    }
+  }
 </style>
 
-{{-- HERO / WELCOME --}}
-<div class="hero-card">
-  <div>
-    <h2>Selamat datang Admin</h2>
-    <h5>Di Website Manajemen Magang</h5>
+<div class="admin-wrapper">
+
+  {{-- HERO --}}
+  <div class="hero-card">
+    <div class="hero-text">
+      <h2>Selamat datang Admin</h2>
+      <h5>Di Website Manajemen Magang</h5>
+    </div>
+
+    <img src="{{ asset('images/admin-3d.png') }}" alt="Admin">
   </div>
 
-  <img src="{{ asset('images/admin-3d.png') }}" alt="Admin">
-</div>
+  {{-- STAT --}}
+  <div class="stat-grid">
 
-{{-- STATS (KLIK-ABLE) --}}
-<div class="stat-grid">
+    <a href="{{ route('admin.supervisor.index') }}" class="stat-link">
+      <div class="stat-box dark">
+        <img class="mini-logo" src="{{ asset('images/logo a.png') }}">
+        <div class="stat-title">Total Supervisor</div>
+        <div class="stat-value">{{ $totalSupervisor ?? 0 }}</div>
+      </div>
+    </a>
 
-  {{-- Total Supervisor (klik ke data supervisor) --}}
-  <a href="{{ route('admin.supervisor.index') }}" class="stat-link">
-    <div class="stat-box dark">
-      <img class="mini-logo" src="{{ asset('images/logo a.png') }}" alt="Logo">
-      <div class="stat-title">Total Supervisor</div>
-      <div class="stat-value">{{ $totalSupervisor ?? 0 }}</div>
-    </div>
-  </a>
+    <a href="{{ route('admin.mahasiswa.index') }}" class="stat-link">
+      <div class="stat-box light">
+        <img class="mini-logo" src="{{ asset('images/logo a.png') }}">
+        <div class="stat-title">Total Mahasiswa Magang</div>
+        <div class="stat-value">{{ $totalMahasiswa ?? 0 }}</div>
+      </div>
+    </a>
 
-  {{-- Total Mahasiswa (klik ke data mahasiswa) --}}
-  <a href="{{ route('admin.mahasiswa.index') }}" class="stat-link">
-    <div class="stat-box light">
-      <img class="mini-logo" src="{{ asset('images/logo a.png') }}" alt="Logo">
-      <div class="stat-title">Total Mahasiswa Magang</div>
-      <div class="stat-value">{{ $totalMahasiswa ?? 0 }}</div>
-    </div>
-  </a>
+  </div>
 
 </div>
 @endsection
+  
