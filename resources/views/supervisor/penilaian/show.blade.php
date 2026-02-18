@@ -108,6 +108,8 @@
 </style>
 
 @php
+  use Carbon\Carbon;
+
   $arr = is_array($penilaian->nilai ?? null) ? $penilaian->nilai : [];
 
   $aspek = [
@@ -139,14 +141,23 @@
   $statusText = $hasNilai ? 'Sudah dinilai' : 'Belum dinilai';
   $statusClass = $hasNilai ? 'pill-green' : 'pill-gray';
 
-  // Pastikan skor tetap tampil walau kolom belum ada / kosong
   $totalSkor  = $penilaian->total_skor ?? array_sum($arr);
   $nilaiAkhir = $penilaian->nilai_akhir ?? (count($arr) ? round($totalSkor / 15, 2) : 0);
+
+  $rawTanggal = $penilaian->tanggal ?? null;
+  if (!$rawTanggal) {
+    $tanggalTampil = '-';
+  } else {
+    try {
+      $tanggalTampil = Carbon::parse($rawTanggal)->format('Y-m-d');
+    } catch (\Throwable $e) {
+      $tanggalTampil = explode(' ', (string)$rawTanggal)[0] ?? (string)$rawTanggal;
+    }
+  }
 @endphp
 
 <div class="detail-wrap container-fluid">
 
-  {{-- Header --}}
   <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
     <div>
       <h2 class="page-title mb-1">Detail Penilaian</h2>
@@ -158,7 +169,6 @@
     </div>
   </div>
 
-  {{-- Info Mahasiswa --}}
   <div class="card-clean mb-3">
     <div class="p-3 d-flex flex-wrap justify-content-between align-items-start gap-3">
       <div>
@@ -180,7 +190,6 @@
     </div>
   </div>
 
-  {{-- Ringkasan Skor --}}
   <div class="stat-grid mb-3">
     <div class="stat">
       <div class="label">TOTAL SKOR</div>
@@ -193,12 +202,11 @@
     <div class="stat">
       <div class="label">TANGGAL</div>
       <div class="value" style="font-size:16px;">
-        {{ $penilaian->tanggal ?? '-' }}
+        {{ $tanggalTampil }}
       </div>
     </div>
   </div>
 
-  {{-- Detail 15 Aspek (seperti create: ada nama aspek + range + nilai) --}}
   <div class="card-clean">
     <div class="p-3 border-bottom" style="border-color:#e5e7eb;">
       <div style="color:#0f172a;">Detail 15 Aspek</div>

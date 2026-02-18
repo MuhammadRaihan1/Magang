@@ -23,15 +23,15 @@
     justify-content:space-between;
     align-items:center;
     color:#fff;
-    background: linear-gradient(
+    background:linear-gradient(
       135deg,
       #2563eb,
-      #dc2626,
+      #38bdf8,
       #9333ea,
-      #0d9488
+      #fff7ed
     );
     background-size:300% 300%;
-    animation: gradientMove 14s ease infinite;
+    animation:gradientMove 14s ease infinite;
     box-shadow:0 30px 60px rgba(0,0,0,.2);
   }
 

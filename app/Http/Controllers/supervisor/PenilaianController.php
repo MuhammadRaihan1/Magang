@@ -7,6 +7,9 @@ use App\Models\Penilaian;
 use App\Models\User;
 use Illuminate\Http\Request;
 
+// ✅ TAMBAHAN
+use Barryvdh\DomPDF\Facade\Pdf;
+
 class PenilaianController extends Controller
 {
     public function index()
@@ -99,6 +102,25 @@ class PenilaianController extends Controller
         return redirect()
             ->route('supervisor.penilaian.index')
             ->with('success', 'Penilaian berhasil diperbarui.');
+    }
+
+    // ✅ TAMBAHAN: CETAK PDF
+    public function cetakPdf(User $mahasiswa)
+    {
+        $penilaian = Penilaian::where('mahasiswa_id', $mahasiswa->id)
+            ->latest()
+            ->firstOrFail();
+
+        $pdf = Pdf::loadView('supervisor.penilaian.pdf', [
+            'mahasiswa' => $mahasiswa,
+            'penilaian' => $penilaian,
+        ])->setPaper('A4', 'portrait');
+
+        // tampilkan di tab browser
+        return $pdf->stream('hasil-nilai-' . $mahasiswa->name . '.pdf');
+
+        // kalau mau download langsung, ganti jadi:
+        // return $pdf->download('hasil-nilai-' . $mahasiswa->name . '.pdf');
     }
 
     private function gradeFromScore(float $nilai): string

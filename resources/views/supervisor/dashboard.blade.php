@@ -9,16 +9,16 @@
   }
 
   .stat-card{
-    border-radius: 18px;
-    padding: 1.75rem 2rem;
+    border-radius:18px;
+    padding:1.75rem 2rem;
     cursor:pointer;
     transition:.15s ease;
     height:100%;
   }
 
   .stat-card:hover{
-    transform: translateY(-3px);
-    box-shadow: 0 16px 30px rgba(0,0,0,.15);
+    transform:translateY(-3px);
+    box-shadow:0 16px 30px rgba(0,0,0,.15);
   }
 
   .stat-inner{
@@ -34,7 +34,7 @@
     align-items:center;
     justify-content:center;
     border-radius:14px;
-    background: rgba(255,255,255,.25);
+    background:rgba(255,255,255,.25);
     flex-shrink:0;
   }
 
@@ -56,30 +56,29 @@
   }
 
   .stat-dark{
-    background: linear-gradient(135deg,#334155,#64748b);
+    background:linear-gradient(135deg,#334155,#64748b);
     color:#fff;
   }
 
   .stat-white{
-    background: linear-gradient(135deg,#e0f2fe,#f8fafc);
+    background:linear-gradient(135deg,#fff7ed,#f8fafc);
     color:#0f172a;
   }
 
-  /* HEADER WARNA ACAK */
   .dashboard-header{
-    border-radius: 20px;
-    padding: 2.5rem;
-    margin-bottom: 2rem;
+    border-radius:20px;
+    padding:2.5rem;
+    margin-bottom:2rem;
     color:#fff;
-    background: linear-gradient(
+    background:linear-gradient(
       135deg,
       #2563eb,
-      #dc2626,
+      #38bdf8,
       #9333ea,
-      #0d9488
+      #fff7ed
     );
-    background-size: 300% 300%;
-    animation: gradientMove 10s ease infinite;
+    background-size:300% 300%;
+    animation:gradientMove 10s ease infinite;
   }
 
   @keyframes gradientMove{
