@@ -3,242 +3,218 @@
 @section('title', 'Laporan Kegiatan Mahasiswa')
 
 @section('content')
-<style>
-  body{
-    font-family:'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  }
 
-  /* PAGE HEADER */
-  .page-header{
+<style>
+body{
+    font-family:"Times New Roman", Times, serif;
+}
+
+.table-wrapper{
+    background:#f8fafc;
+    border:1px solid #d1d5db;
+    border-radius:6px;
+    overflow:hidden;
+}
+
+.table-header{
+    background:#5b8bd9;
+    color:#fff;
+    padding:10px 16px;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:22px;
-    flex-wrap:wrap;
-    gap:16px;
-  }
+}
 
-  .page-header h3{
+.table-header h4{
     margin:0;
-    font-size:26px;
-    font-weight:900;
-    color:#0f172a;
-  }
+    font-size:14px;
+    font-weight:normal;
+}
 
-  /* FILTER */
-  .filter-box{
-    display:flex;
-    gap:10px;
-  }
+.filter-select{
+    padding:4px 8px;
+    font-size:13px;
+    border-radius:4px;
+    border:none;
+}
 
-  .filter-box select{
-    border-radius:10px;
-    font-weight:600;
-  }
-
-  .filter-box button{
-    border-radius:10px;
-    font-weight:700;
-  }
-
-  /* ALERT */
-  .alert-success{
-    background:#ecfeff;
-    color:#0f172a;
-    border-left:6px solid #2563eb;
-    padding:14px 18px;
-    border-radius:12px;
-    margin-bottom:20px;
-    font-weight:600;
-  }
-
-  /* TABLE CARD */
-  .table-card{
-    background:#ffffff;
-    border-radius:20px;
-    box-shadow:0 22px 45px rgba(15,23,42,.08);
-    padding:0;
-  }
-
-  table{
+table{
     width:100%;
-    border-collapse:separate;
-    border-spacing:0;
-  }
-
-  /* HEADER TABLE */
-  thead tr{
-    background:#c7d2fe;
-  }
-
-  thead th{
-    padding:18px;
-    font-size:13px;
-    font-weight:900;
-    color:#1e293b;
-    text-transform:uppercase;
-    letter-spacing:.6px;
-    text-align:left;
-  }
-
-  thead th:first-child{
-    border-top-left-radius:20px;
-    width:70px;
-  }
-
-  thead th:last-child{
-    border-top-right-radius:20px;
-    text-align:center;
-    width:140px;
-  }
-
-  tbody td{
-    padding:18px;
-    font-size:15px;
-    color:#0f172a;
-    border-top:1px solid #e5e7eb;
-    vertical-align:middle;
-  }
-
-  tbody tr:hover{
-    background:#f8fafc;
-  }
-
-  .td-ellipsis{
-    max-width:420px;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
-
-  /* STATUS BADGE */
-  .badge{
-    font-size:12px;
-    font-weight:800;
-    padding:6px 12px;
-    border-radius:999px;
-  }
-
-  .badge-pending{
-    background:#fde68a;
-    color:#92400e;
-  }
-
-  .badge-approved{
-    background:#bbf7d0;
-    color:#14532d;
-  }
-
-  .badge-rejected{
-    background:#fecaca;
-    color:#7f1d1d;
-  }
-
-  /* ACTION */
-  .btn-detail{
-    padding:6px 14px;
-    border-radius:999px;
-    font-size:13px;
-    font-weight:800;
-    border:2px solid #0f172a;
+    border-collapse:collapse;
     background:#fff;
-    color:#0f172a;
-    transition:.15s ease;
-    text-decoration:none;
-  }
+}
 
-  .btn-detail:hover{
-    background:#0f172a;
+thead{
+    background:#f1f5f9;
+}
+
+thead th{
+    padding:10px;
+    font-size:13px;
+    font-weight:normal;
+    text-align:left;
+    border:1px solid #e5e7eb;
+}
+
+tbody td{
+    padding:10px;
+    font-size:13px;
+    border:1px solid #e5e7eb;
+}
+
+tbody tr:nth-child(even){
+    background:#f9fafb;
+}
+
+tbody tr:hover{
+    background:#eef2f7;
+}
+
+.status-aktif{
+    color:#2563eb;
+    font-weight:600;
+}
+
+.status-selesai{
+    color:#16a34a;
+    font-weight:600;
+}
+
+.btn-detail{
+    padding:4px 8px;
+    font-size:12px;
+    background:#5b8bd9;
     color:#fff;
-  }
+    border:none;
+    border-radius:4px;
+    text-decoration:none;
+}
 
-  /* PAGINATION */
-  .pagination{
-    justify-content:center;
-    margin-top:24px;
-  }
-
-  @media(max-width:768px){
-    thead th,
-    tbody td{
-      padding:14px;
-      font-size:14px;
-    }
-
-    .page-header{
-      flex-direction:column;
-      align-items:flex-start;
-    }
-  }
+.btn-detail:hover{
+    background:#4a78c2;
+}
 </style>
 
-{{-- PAGE HEADER --}}
-<div class="page-header">
-  <h3>Laporan Kegiatan Mahasiswa</h3>
+<h3 style="margin-bottom:15px; font-weight:normal;">Laporan Kegiatan Mahasiswa</h3>
 
-  <form method="GET" class="filter-box">
-    <select name="status" class="form-select">
-      <option value="">Semua</option>
-      <option value="Pending"  {{ request('status')=='Pending' ? 'selected' : '' }}>Pending</option>
-      <option value="Approved" {{ request('status')=='Approved' ? 'selected' : '' }}>Approved</option>
-      <option value="Rejected" {{ request('status')=='Rejected' ? 'selected' : '' }}>Rejected</option>
-    </select>
-    <button class="btn btn-primary">Filter</button>
-  </form>
-</div>
+<div class="table-wrapper">
 
-@if(session('success'))
-  <div class="alert-success">
-    {{ session('success') }}
-  </div>
-@endif
+    <div class="table-header">
+        <h4>Data Laporan</h4>
 
-{{-- TABLE --}}
-<div class="table-card">
-  <table>
-    <thead>
-      <tr>
-        <th>No</th>
-        <th>Mahasiswa</th>
-        <th>Tanggal</th>
-        <th>Aktivitas</th>
-        <th>Status</th>
-        <th>Aksi</th>
-      </tr>
-    </thead>
+        @if(isset($mahasiswas))
+            <form method="GET">
+                <select name="status_magang"
+                        class="filter-select"
+                        onchange="this.form.submit()">
+                    <option value="">Semua</option>
+                    <option value="aktif"
+                        {{ request('status_magang') == 'aktif' ? 'selected' : '' }}>
+                        Mahasiswa Aktif
+                    </option>
+                    <option value="selesai"
+                        {{ request('status_magang') == 'selesai' ? 'selected' : '' }}>
+                        Mahasiswa Selesai
+                    </option>
+                </select>
+            </form>
+        @endif
+    </div>
 
-    <tbody>
-      @forelse($kegiatans as $i => $k)
-        <tr>
-          <td>{{ $kegiatans->firstItem() + $i }}</td>
-          <td style="font-weight:700;">{{ $k->mahasiswa->name ?? '-' }}</td>
-          <td>{{ optional($k->tanggal)->format('d-m-Y') }}</td>
-          <td class="td-ellipsis">{{ $k->aktivitas }}</td>
-          <td>
-            @if($k->status == 'Pending')
-              <span class="badge badge-pending">Pending</span>
-            @elseif($k->status == 'Approved')
-              <span class="badge badge-approved">Approved</span>
-            @else
-              <span class="badge badge-rejected">Rejected</span>
-            @endif
-          </td>
-          <td style="text-align:center;">
-            <a href="{{ route('supervisor.kegiatan.show', $k->id) }}" class="btn-detail">
-              Detail
+    @if(isset($mahasiswas))
+
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Mahasiswa</th>
+                    <th>Status Magang</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @forelse($mahasiswas as $i => $m)
+                    <tr>
+                        <td>{{ $i+1 }}</td>
+                        <td>{{ $m->name }}</td>
+                        <td>
+                            @if($m->penilaianTerakhir && $m->penilaianTerakhir->nilai_akhir)
+                                <span class="status-selesai">Selesai</span>
+                            @else
+                                <span class="status-aktif">Aktif</span>
+                            @endif
+                        </td>
+                        <td>
+                            <a href="{{ route('supervisor.kegiatan.index', ['mahasiswa_id' => $m->id]) }}"
+                               class="btn-detail">
+                                Lihat Laporan
+                            </a>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="4" style="padding:15px;">
+                            Tidak ada mahasiswa.
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+
+    @endif
+
+
+    @if(isset($kegiatans))
+
+        <div style="padding:10px;">
+            <a href="{{ route('supervisor.kegiatan.index') }}"
+               class="btn-detail">
+               ← Kembali ke Daftar Mahasiswa
             </a>
-          </td>
-        </tr>
-      @empty
-        <tr>
-          <td colspan="6" class="text-center py-4" style="color:#64748b;">
-            Belum ada laporan.
-          </td>
-        </tr>
-      @endforelse
-    </tbody>
-  </table>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Tanggal</th>
+                    <th>Aktivitas</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @forelse($kegiatans as $i => $k)
+                    <tr>
+                        <td>{{ $kegiatans->firstItem() + $i }}</td>
+                        <td>{{ optional($k->tanggal)->format('d-m-Y') }}</td>
+                        <td>{{ $k->aktivitas }}</td>
+                        <td>{{ $k->status }}</td>
+                        <td>
+                            <a href="{{ route('supervisor.kegiatan.show', $k->id) }}"
+                               class="btn-detail">
+                               Detail
+                            </a>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5" style="padding:15px;">
+                            Belum ada laporan.
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+
+        <div style="padding:10px;">
+            {{ $kegiatans->links() }}
+        </div>
+
+    @endif
+
 </div>
 
-{{ $kegiatans->links() }}
 @endsection

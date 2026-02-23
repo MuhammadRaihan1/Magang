@@ -1,196 +1,174 @@
 @extends('admin.layout')
 
-@section('title', 'Data Mahasiswa')
+@section('title','Data Mahasiswa')
 
 @section('content')
-<style>
-  body{
-    font-family:'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  }
 
-  /* HEADER PAGE */
-  .page-header{
+<style>
+html,body{
+    margin:0;
+    padding:0;
+    background:#e6edf5;
+    font-family:"Times New Roman", Times, serif;
+}
+
+/* Judul */
+.page-title{
+    font-size:26px;
+    margin:0 6px 10px 6px;
+    font-weight:normal;
+}
+
+/* Card utama */
+.report-box{
+    margin:0 3px 20px 3px;
+    background:#f8fafc;
+    border-radius:16px;
+    border:1px solid #cbd5e1;
+    overflow:hidden;
+    width:calc(100% - 6px);
+}
+
+/* Header biru */
+.report-header{
+    background:#BCC9EE;
+    color:#000;
+    padding:14px 20px;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:22px;
-    flex-wrap:wrap;
-    gap:14px;
-  }
+    font-size:17px;
+}
 
-  .page-header h2{
-    margin:0;
-    font-size:28px;
-    font-weight:900;
-    color:#0f172a;
-  }
-
-  .btn-add{
-    padding:10px 20px;
-    border-radius:12px;
-    background:#2563eb;
-    color:#fff;
-    font-weight:800;
-    text-decoration:none;
-    box-shadow:0 10px 22px rgba(37,99,235,.35);
-    transition:.2s ease;
-  }
-
-  .btn-add:hover{
-    transform:translateY(-2px);
-  }
-
-  /* TABLE CARD */
-  .table-card{
+/* Tombol header */
+.header-btn{
     background:#ffffff;
-    border-radius:20px;
-    box-shadow:0 22px 45px rgba(15,23,42,.08);
-    padding:0;
-  }
-
-  table{
-    width:100%;
-    border-collapse:separate;
-    border-spacing:0;
-  }
-
-  /* === HEADER TABLE FULL WARNA KIRI–KANAN === */
-  thead tr{
-    background:#c7d2fe; /* sama seperti sidebar */
-  }
-
-  thead th{
-    padding:18px;
-    font-size:13px;
-    font-weight:900;
-    color:#1e293b;
-    text-transform:uppercase;
-    letter-spacing:.6px;
-    text-align:left;
-  }
-
-  thead th:first-child{
-    border-top-left-radius:20px;
-  }
-
-  thead th:last-child{
-    border-top-right-radius:20px;
-    text-align:center;
-  }
-
-  tbody td{
-    padding:18px;
-    font-size:15px;
-    color:#0f172a;
-    border-top:1px solid #e5e7eb;
-  }
-
-  tbody tr:hover{
-    background:#f8fafc;
-  }
-
-  .td-name{
-    font-weight:700;
-  }
-
-  /* ACTION */
-  .actions{
-    display:flex;
-    justify-content:center;
-    gap:10px;
-  }
-
-  .btn-pill{
+    color:#000;
     padding:6px 18px;
-    border-radius:999px;
-    font-size:13px;
-    font-weight:800;
-    background:#fff;
-    cursor:pointer;
-    transition:.15s ease;
-  }
+    border-radius:18px;
+    text-decoration:none;
+    border:1px solid #cbd5e1;
+    font-size:14px;
+}
 
-  .btn-edit{
+/* Tabel */
+.report-table{
+    width:100%;
+    border-collapse:collapse;
+    background:#ffffff;
+}
+
+/* Header tabel */
+.report-table th{
+    background:#eef2f7;
+    border:1px solid #cfd8e3;
+    padding:14px 16px;
+    font-size:15px;
+    text-align:left;
+}
+
+/* Isi tabel */
+.report-table td{
+    border:1px solid #cfd8e3;
+    padding:14px 16px;
+    font-size:15px;
+}
+
+/* Hover baris */
+.report-table tr:hover{
+    background:#f1f5f9;
+}
+
+/* Aksi hanya teks */
+.action-wrapper{
+    display:flex;
+    gap:12px;
+}
+
+.text-edit{
     color:#2563eb;
-    border:2px solid #2563eb;
-  }
+    text-decoration:none;
+    font-size:14px;
+}
 
-  .btn-edit:hover{
-    background:#2563eb;
-    color:#fff;
-  }
-
-  .btn-delete{
+.text-delete{
     color:#dc2626;
-    border:2px solid #dc2626;
-  }
+    background:none;
+    border:none;
+    cursor:pointer;
+    font-size:14px;
+    padding:0;
+}
 
-  .btn-delete:hover{
-    background:#dc2626;
-    color:#fff;
-  }
+.text-edit:hover{
+    text-decoration:underline;
+}
 
-  @media(max-width:768px){
-    thead th,
-    tbody td{
-      padding:14px;
-      font-size:14px;
-    }
-  }
+.text-delete:hover{
+    text-decoration:underline;
+}
 </style>
 
-{{-- PAGE HEADER --}}
-<div class="page-header">
-  <h2>Data Mahasiswa Magang</h2>
-  <a href="{{ route('admin.mahasiswa.create') }}" class="btn-add">
-    + Tambah Mahasiswa
-  </a>
+<div class="page-title">
+    Data Mahasiswa Magang
 </div>
 
-{{-- TABLE --}}
-<div class="table-card">
-  <table>
-    <thead>
-      <tr>
-        <th style="width:80px;">No</th>
-        <th>Nama</th>
-        <th>Email</th>
-        <th style="width:200px; text-align:center;">Aksi</th>
-      </tr>
-    </thead>
+<div class="report-box">
 
-    <tbody>
-      @forelse($mahasiswa as $mhs)
-        <tr>
-          <td>{{ $loop->iteration }}</td>
-          <td class="td-name">{{ $mhs->name }}</td>
-          <td>{{ $mhs->email }}</td>
-          <td>
-            <div class="actions">
-              <a href="{{ route('admin.mahasiswa.edit', $mhs->id) }}" class="btn-pill btn-edit">
-                Edit
-              </a>
+    <div class="report-header">
+        <div>Daftar Mahasiswa</div>
 
-              <form action="{{ route('admin.mahasiswa.destroy', $mhs->id) }}"
-                    method="POST"
-                    onsubmit="return confirm('Yakin ingin menghapus mahasiswa ini?')">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn-pill btn-delete">
-                  Hapus
-                </button>
-              </form>
-            </div>
-          </td>
-        </tr>
-      @empty
-        <tr>
-          <td colspan="4" style="text-align:center; padding:26px; color:#64748b;">
-            Belum ada data mahasiswa.
-          </td>
-        </tr>
-      @endforelse
-    </tbody>
-  </table>
+        <div>
+            <a href="{{ route('admin.mahasiswa.create') }}" class="header-btn">
+                + Tambah Mahasiswa
+            </a>
+        </div>
+    </div>
+
+    <table class="report-table">
+        <thead>
+            <tr>
+                <th style="width:80px;">No</th>
+                <th>Nama</th>
+                <th>Email</th>
+                <th style="width:160px;">Aksi</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        @forelse($mahasiswa as $mhs)
+            <tr>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ $mhs->name }}</td>
+                <td>{{ $mhs->email }}</td>
+                <td>
+                    <div class="action-wrapper">
+                        <a href="{{ route('admin.mahasiswa.edit',$mhs->id) }}" class="text-edit">
+                            Edit
+                        </a>
+
+                        <form action="{{ route('admin.mahasiswa.destroy',$mhs->id) }}"
+                              method="POST"
+                              onsubmit="return confirm('Yakin ingin menghapus mahasiswa ini?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-delete">
+                                Hapus
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="4" style="text-align:center;">
+                    Belum ada data mahasiswa.
+                </td>
+            </tr>
+        @endforelse
+        </tbody>
+    </table>
+
 </div>
+
 @endsection

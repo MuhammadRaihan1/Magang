@@ -3,314 +3,239 @@
 @section('title', 'Penilaian Mahasiswa')
 
 @section('content')
+
 <style>
-  body{
-    font-family:'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    font-weight:400;
-  }
+body{
+    font-family:"Times New Roman", Times, serif;
+}
 
-  /* PAGE HEADER */
-  .page-header{
-    margin-bottom:18px;
-  }
-  .page-header h2{
-    margin:0;
-    font-size:28px;
-    font-weight:400;
-    color:#0f172a;
-  }
-
-  /* ALERT */
-  .alert-success{
-    background:#ecfeff;
-    color:#0f172a;
-    border-left:6px solid #2563eb;
-    padding:14px 18px;
-    border-radius:12px;
-    margin-bottom:20px;
-    font-weight:400;
-  }
-
-  /* TABLE CARD */
-  .table-card{
-    background:#ffffff;
-    border-radius:20px;
-    box-shadow:0 22px 45px rgba(15,23,42,.08);
-    overflow:hidden;
-  }
-
-  table{
-    width:100%;
-    border-collapse:separate;
-    border-spacing:0;
-  }
-
-  /* HEADER TABLE */
-  thead tr{
-    background:#c7d2fe;
-  }
-
-  thead th{
-    padding:18px;
-    font-size:13px;
-    font-weight:400;
-    color:#1e293b;
-    text-transform:uppercase;
-    letter-spacing:.6px;
-  }
-
-  thead th:first-child{
-    width:70px;
-    text-align:center;
-  }
-
-  thead th:last-child{
-    width:290px;
-    text-align:center;
-  }
-
-  tbody td{
-    padding:18px;
-    font-size:15px;
-    color:#0f172a;
-    border-top:1px solid #e5e7eb;
-    vertical-align:middle;
-    font-weight:400;
-  }
-
-  tbody tr:hover{
+.wrapper-box{
     background:#f8fafc;
-  }
+    border:1px solid #d1d5db;
+    border-radius:6px;
+    overflow:hidden;
+}
 
-  .mhs-name{ 
-    font-weight:400; 
-  }
-
-  .text-muted{ 
-    color:#64748b; 
-    font-weight:400;
-  }
-
-  /* HASIL */
-  .hasil-inline{
+.top-header{
+    background:#5b8bd9;
+    color:#fff;
+    padding:10px 16px;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    gap:12px;
-  }
+}
 
-  .hasil-label{
+.top-header h3{
+    margin:0;
+    font-size:16px;
+    font-weight:normal;
+}
+
+.filter-select{
+    padding:4px 8px;
     font-size:13px;
-    color:#64748b;
-    font-weight:400;
-  }
+    border-radius:4px;
+    border:none;
+}
 
-  .hasil-value{
-    font-size:15px;
-    font-weight:400;
-  }
+.alert-success{
+    background:#f0f9ff;
+    border:1px solid #d1d5db;
+    padding:10px 16px;
+    margin-bottom:12px;
+    font-size:14px;
+}
 
-  /* BADGE */
-  .badge-grade{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    min-width:42px;
-    height:26px;
-    padding:0 12px;
-    border-radius:999px;
-    font-size:12px;
-    border:1px solid #e2e8f0;
-    font-weight:400;
-  }
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:#fff;
+}
 
-  .g-a{ color:#065f46; border-color:#a7f3d0; }
-  .g-b{ color:#1d4ed8; border-color:#bfdbfe; }
-  .g-c{ color:#92400e; border-color:#fde68a; }
-  .g-d{ color:#991b1b; border-color:#fecaca; }
-  .g-x{ color:#0f172a; border-color:#e2e8f0; }
-
-  .badge-muted{
-    padding:6px 14px;
-    border-radius:999px;
+thead{
     background:#f1f5f9;
-    color:#475569;
-    font-size:13px;
-    font-weight:400;
-  }
+}
 
-  /* ACTION */
-  .aksi-group{
+thead th{
+    padding:8px;
+    font-size:13px;
+    font-weight:normal;
+    border:1px solid #e5e7eb;
+    text-align:left;
+}
+
+tbody td{
+    padding:8px;
+    font-size:13px;
+    border:1px solid #e5e7eb;
+}
+
+tbody tr:nth-child(even){
+    background:#f9fafb;
+}
+
+.center{
+    text-align:center;
+}
+
+.status-belum{
+    color:#64748b;
+}
+
+.grade-a{ color:#16a34a; }
+.grade-b{ color:#2563eb; }
+.grade-c{ color:#f59e0b; }
+.grade-d{ color:#dc2626; }
+
+.aksi-group{
     display:flex;
     align-items:center;
     justify-content:center;
-    gap:12px;
-    white-space:nowrap;
-  }
+    gap:8px;
+}
 
-  .btn-action{
-    padding:7px 18px;
-    border-radius:999px;
-    font-size:13px;
-    font-weight:400;
-    border:2px solid #2563eb;
-    color:#2563eb;
-    background:#fff;
+.btn-action{
+    padding:4px 10px;
+    font-size:12px;
+    background:#5b8bd9;
+    color:#fff;
+    border:none;
+    border-radius:4px;
     text-decoration:none;
-    display:inline-flex;
-    align-items:center;
-    line-height:1;
-  }
+    display:inline-block;
+}
 
-  .btn-action:hover{
+.btn-action:hover{
+    background:#4a78c2;
+}
+
+.btn-primary-soft{
+    padding:4px 12px;
+    font-size:12px;
     background:#2563eb;
     color:#fff;
-  }
-
-  .btn-primary-soft{
-    padding:7px 20px;
-    border-radius:999px;
-    font-size:13px;
-    font-weight:400;
-    background:#2563eb;
-    color:#fff;
+    border:none;
+    border-radius:4px;
     text-decoration:none;
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    white-space:nowrap;
-  }
+    display:inline-block;
+}
 
-  .btn-primary-soft:hover{
+.btn-primary-soft:hover{
     background:#1e40af;
-  }
+}
 
-  /* CETAK PDF */
-  .btn-print-img{
+.btn-print-img{
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    text-decoration:none;
-    line-height:1;
     padding:0;
-  }
+}
 
-  .btn-print-img img{
-    width:34px;
-    height:34px;
+.btn-print-img img{
+    width:22px;
+    height:22px;
     object-fit:contain;
-    opacity:.9;
-    transition:.15s ease;
-  }
-
-  .btn-print-img:hover img{
-    transform:scale(1.08);
-    opacity:1;
-  }
-
-  @media(max-width:768px){
-    thead th, tbody td{
-      padding:14px;
-      font-size:14px;
-    }
-
-    .page-header h2{
-      font-size:24px;
-    }
-
-    thead th:last-child{
-      width:270px;
-    }
-
-    .btn-print-img img{
-      width:32px;
-      height:32px;
-    }
-  }
+}
 </style>
 
-<div class="page-header">
-  <h2>Penilaian Akhir Mahasiswa</h2>
-</div>
+<h3 style="margin-bottom:15px;">Penilaian Akhir Mahasiswa</h3>
 
 @if(session('success'))
-  <div class="alert-success">
+<div class="alert-success">
     {{ session('success') }}
-  </div>
+</div>
 @endif
 
-<div class="table-card">
-  <table>
-    <thead>
-      <tr>
-        <th>No</th>
-        <th>Mahasiswa</th>
-        <th>Email</th>
-        <th style="width:260px;">Hasil</th>
-        <th style="text-align:center;">Aksi</th>
-      </tr>
-    </thead>
+<div class="wrapper-box">
 
-    <tbody>
-      @forelse($mahasiswa as $i => $mhs)
-        @php
-          $p = $mhs->penilaianTerakhir;
-          $grade = $p->grade ?? null;
+    <div class="top-header">
+        <h3>Data Penilaian Mahasiswa</h3>
 
-          $gradeClass = 'g-x';
-          if (in_array($grade, ['A','A-'])) $gradeClass = 'g-a';
-          elseif (in_array($grade, ['B+','B','B-'])) $gradeClass = 'g-b';
-          elseif (in_array($grade, ['C+','C','C-'])) $gradeClass = 'g-c';
-          elseif (in_array($grade, ['D','E'])) $gradeClass = 'g-d';
-        @endphp
+        <form method="GET">
+            <select name="status_nilai"
+                    class="filter-select"
+                    onchange="this.form.submit()">
 
-        <tr>
-          <td class="text-muted" style="text-align:center;">{{ $i + 1 }}</td>
-          <td class="mhs-name">{{ $mhs->name }}</td>
-          <td class="text-muted">{{ $mhs->email }}</td>
+                <option value="">Semua</option>
+                <option value="sudah"
+                    {{ request('status_nilai') == 'sudah' ? 'selected' : '' }}>
+                    Sudah Dinilai
+                </option>
+                <option value="belum"
+                    {{ request('status_nilai') == 'belum' ? 'selected' : '' }}>
+                    Belum Dinilai
+                </option>
+            </select>
+        </form>
+    </div>
 
-          <td>
-            @if($p)
-              <div class="hasil-inline">
-                <div>
-                  <span class="hasil-label">Nilai</span>
-                  <span class="hasil-value">{{ number_format($p->nilai_akhir, 2) }}</span>
-                </div>
-                <span class="badge-grade {{ $gradeClass }}">{{ $grade }}</span>
-              </div>
-            @else
-              <span class="badge-muted">Belum dinilai</span>
-            @endif
-          </td>
+    <table>
+        <thead>
+            <tr>
+                <th style="width:60px;">No</th>
+                <th>Mahasiswa</th>
+                <th>Email</th>
+                <th style="width:200px;">Hasil</th>
+                <th style="width:260px;" class="center">Aksi</th>
+            </tr>
+        </thead>
 
-          <td style="text-align:center;">
-            <div class="aksi-group">
-              @if($p)
-                <a class="btn-action" href="{{ route('supervisor.penilaian.show', $mhs->id) }}">Detail</a>
-                <a class="btn-action" href="{{ route('supervisor.penilaian.edit', $mhs->id) }}">Edit</a>
+        <tbody>
+            @forelse($mahasiswa as $i => $mhs)
+                @php
+                    $p = $mhs->penilaians->first();
+                    $grade = $p->grade ?? null;
+                    $gradeClass = '';
+                    if ($grade === 'A') $gradeClass = 'grade-a';
+                    elseif ($grade === 'B') $gradeClass = 'grade-b';
+                    elseif ($grade === 'C') $gradeClass = 'grade-c';
+                    elseif (in_array($grade, ['D','E'])) $gradeClass = 'grade-d';
+                @endphp
 
-                <a class="btn-print-img"
-                   href="{{ route('supervisor.penilaian.cetak.pdf', $mhs->id) }}"
-                   target="_blank"
-                   title="Cetak PDF">
-                  <img src="{{ asset('images/logoprint.png') }}" alt="Cetak PDF">
-                </a>
-              @else
-                <a class="btn-primary-soft" href="{{ route('supervisor.penilaian.create', $mhs->id) }}">
-                  Isi Penilaian
-                </a>
-              @endif
-            </div>
-          </td>
-        </tr>
-      @empty
-        <tr>
-          <td colspan="5" class="text-muted" style="text-align:center; padding:18px;">
-            Data mahasiswa tidak ditemukan.
-          </td>
-        </tr>
-      @endforelse
-    </tbody>
-  </table>
+                <tr>
+                    <td class="center">{{ $i + 1 }}</td>
+                    <td>{{ $mhs->name }}</td>
+                    <td>{{ $mhs->email }}</td>
+
+                    <td>
+                        @if($p)
+                            Nilai: {{ number_format($p->nilai_akhir, 2) }} |
+                            <span class="{{ $gradeClass }}">{{ $grade }}</span>
+                        @else
+                            <span class="status-belum">Belum dinilai</span>
+                        @endif
+                    </td>
+
+                    <td class="center">
+                        <div class="aksi-group">
+                            @if($p)
+                                <a class="btn-action" href="{{ route('supervisor.penilaian.show', $mhs->id) }}">Detail</a>
+                                <a class="btn-action" href="{{ route('supervisor.penilaian.edit', $mhs->id) }}">Edit</a>
+
+                                <a class="btn-print-img"
+                                   href="{{ route('supervisor.penilaian.cetak.pdf', $mhs->id) }}"
+                                   target="_blank"
+                                   title="Cetak PDF">
+                                    <img src="{{ asset('images/logoprint.png') }}" alt="Cetak">
+                                </a>
+                            @else
+                                <a class="btn-primary-soft" href="{{ route('supervisor.penilaian.create', $mhs->id) }}">
+                                    Isi Penilaian
+                                </a>
+                            @endif
+                        </div>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="5" class="center">
+                        Data mahasiswa tidak ditemukan.
+                    </td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+
 </div>
+
 @endsection

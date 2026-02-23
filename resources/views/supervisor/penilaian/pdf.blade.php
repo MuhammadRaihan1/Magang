@@ -1,208 +1,304 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <title>Lembar Hasil Magang</title>
-    <style>
-        @page { size: A4; margin: 20mm 18mm; }
+<meta charset="UTF-8">
+<title>Lembar Hasil Penilaian</title>
 
-        body{
-            font-family: "DejaVu Sans", sans-serif;
-            font-size: 12px;
-            color:#000;
-            margin:0;
-            padding:0;
-        }
+<style>
+@page { size: A4 portrait; margin: 14mm 16mm 10mm 16mm; }
 
-        .paper{
-            border: 1px solid #111;
-            padding: 16px 16px 14px;
-        }
+body{
+  font-family:"DejaVu Sans", sans-serif;
+  font-size:11px;
+  color:#000;
+  margin:0;
+}
 
-        .kop{
-            position: relative;
-            text-align:center;
-            padding-top: 2px;
-            padding-bottom: 8px;
-        }
+.paper{
+  border:1px solid #111;
+  padding:14px 14px 10px;
+}
 
-        .kop .logo{
-            position:absolute;
-            left:0;
-            top:0;
-            width:62px;
-            height:62px;
-        }
+.kop{
+  position:relative;
+  text-align:center;
+  padding-bottom:12px;
+  min-height:110px;
+}
 
-        .kop .logo img{
-            width:62px;
-            height:62px;
-            object-fit:contain;
-            display:block;
-        }
+.kop .logo{
+  position:absolute;
+  left:0;
+  top:18px;
+  width:100px;
+}
 
-        .kop .univ{
-            font-weight:700;
-            font-size: 18px;
-            text-transform:uppercase;
-            letter-spacing: .6px;
-            line-height: 1.2;
-            margin-top: 6px;
-        }
+.kop img{
+  width:95px;
+  height:auto;
+  display:block;
+}
 
-        .kop .fakultas{
-            font-weight:700;
-            font-size: 12px;
-            text-transform:uppercase;
-            margin-top: 2px;
-        }
+.kop .nilai{
+  font-weight:700;
+  font-size:17px;
+  text-transform:uppercase;
+  letter-spacing:.4px;
+  line-height:1.2;
+  margin-top:12px;
+}
 
-        .line{
-            border-top:1px solid #777;
-            margin: 12px 0 10px;
-        }
+.kop .bank{
+  font-weight:700;
+  font-size:11.5px;
+  text-transform:uppercase;
+  margin-top:4px;
+}
 
-        .title{
-            font-weight:700;
-            text-transform:uppercase;
-            font-size: 13px;
-            margin:0;
-        }
+.line{
+  border-top:1px solid #777;
+  margin:10px 0 8px;
+  width: calc(100% + 28px);
+  margin-left: -14px;
+}
 
-        .subtitle{
-            font-weight:700;
-            text-transform:uppercase;
-            font-size: 12px;
-            margin:6px 0 0;
-        }
+.content{
+  font-family:"Times New Roman", Times, serif;
+  text-align:left;
+}
 
-        .content{
-            font-family: "Times New Roman", Times, serif;
-            margin-top: 12px;
-            text-align: left;
-        }
+.ident{
+  margin-top:6px;
+  margin-bottom:8px;
+  font-size:11px;
+  font-weight:700;
+}
 
-        .info-table{
-            width:100%;
-            border-collapse: collapse;
-            margin-top: 6px;
-        }
+.ident table{
+  width:100%;
+  border-collapse:collapse;
+}
 
-        .info-table td{
-            padding: 2px 0;
-            font-size: 12px;
-            line-height: 1.35;
-            vertical-align: top;
-        }
+.ident td{
+  padding:2px 0;
+  vertical-align:top;
+  line-height:1.3;
+}
 
-        .info-label{
-            width: 180px;
-            position: relative;
-            padding-right: 14px;
-            font-weight: 700;
-        }
+.ident .label{
+  width:160px;
+  position:relative;
+  padding-right:14px;
+}
 
-        .info-label .colon{
-            position: absolute;
-            right: 0;
-            top: 0;
-            width: 14px;
-            text-align: center;
-            font-weight: 700;
-        }
+.ident .label span{
+  position:absolute;
+  right:0;
+  top:0;
+  width:14px;
+  text-align:center;
+}
 
-        .info-value{
-            padding-left: 6px;
-        }
+.ident .value{
+  padding-left:6px;
+}
 
-        .tbl{
-            width:100%;
-            border-collapse:collapse;
-            margin-top:14px;
-            font-size:12px;
-        }
+.main{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+  font-size:10.3px;
+}
 
-        .tbl th, .tbl td{
-            border:1px solid #111;
-            padding:6px;
-        }
+.main th,.main td{
+  border:1px solid #111;
+  padding:5px 6px;
+  line-height:1.25;
+  vertical-align:top;
+}
 
-        .tbl th{
-            font-weight:700;
-            background:#f5f5f5;
-        }
+.main th{
+  text-align:center;
+  font-weight:700;
+  background:#f5f5f5;
+}
 
-        .right{
-            text-align:right;
-        }
+.c-no{width:34px;text-align:center;font-weight:700;}
+.c-range{width:180px;text-align:center;font-size:10px;}
+.c-nilai{width:52px;text-align:center;font-weight:700;}
 
-        .note{
-            margin-top:8px;
-            font-size:11px;
-        }
-    </style>
+.sum{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:6px;
+  font-size:11px;
+}
+
+.sum td{
+  border:1px solid #111;
+  padding:5px 7px;
+  font-weight:700;
+}
+
+.sum .label{width:70%;}
+.sum .val{width:30%;text-align:right;}
+
+.ttd{
+  margin-top:10px;
+  font-size:11px;
+  font-weight:700;
+}
+
+.ttd-right{
+  width:45%;
+  margin-left:auto;
+  line-height:1.5;
+}
+
+.ttd-right .place{
+  margin-bottom:4px;
+}
+
+.ttd-right .jabatan{
+  margin-bottom:56px;
+}
+
+.ttd-right .nama{
+  text-decoration:underline;
+}
+
+.ttd-right .nip{
+  margin-top:3px;
+}
+
+.foot{
+  margin-top:6px;
+  font-size:9.5px;
+  font-family:"Times New Roman", Times, serif;
+}
+
+table,tr,td,th{page-break-inside:avoid;}
+</style>
 </head>
+
 <body>
+
+@php
+  $logoPath = public_path('images/bank.png');
+  $logoData = null;
+
+  if (file_exists($logoPath)) {
+    $type = pathinfo($logoPath, PATHINFO_EXTENSION);
+    $data = file_get_contents($logoPath);
+    $logoData = 'data:image/' . $type . ';base64,' . base64_encode($data);
+  }
+
+  $aspek = [
+    'Penguasaan ilmu bidang studi (teori) penunjang praktek',
+    'Keterampilan membaca gambar kerja / petunjuk',
+    'Keterampilan menggunakan alat / instrumen praktek',
+    'Kapasitas hasil praktek sesuai waktu yang disediakan',
+    'Kualitas hasil praktek dibanding standar (tolak ukur)',
+    'Kemampuan berpraktek secara mandiri',
+    'Inisiatif meningkatkan hasil praktek',
+    'Inisiatif menyelesaikan / mengatasi masalah',
+    'Kerja sama dengan orang lain selama praktek',
+    'Disiplin dan kehadiran di tempat praktek',
+    'Tanggung jawab dalam bekerja',
+    'Etika / sopan santun selama praktek',
+    'Komunikasi dengan pembimbing / tim',
+    'Kerapian dan ketelitian kerja',
+    'Keselamatan dan kesehatan kerja (K3)',
+  ];
+
+  $nilai = $penilaian->nilai ?? [];
+  $rangeText = '1=20 | 2=40 | 3=60 | 4=80 | 5=100';
+
+  $namaPejabat =
+    optional(optional($penilaian)->supervisor)->name
+    ?? 'Supervisor';
+
+  $nipPejabat =
+    optional(optional($penilaian)->supervisor)->nip
+    ?? '-';
+@endphp
+
 <div class="paper">
 
-    <div class="kop">
-        <div class="logo">
-            <img src="{{ public_path('images/bank.png') }}" alt="Logo">
-        </div>
-
-        <div class="univ">NILAI MANAGEMENT MAGANG</div>
-        <div class="fakultas">BANK NAGARI</div>
-
-        <div class="line"></div>
-
-        <p class="title">LEMBAR HASIL MAGANG</p>
-        <p class="subtitle">2026</p>
+  <div class="kop">
+    <div class="logo">
+      @if($logoData)
+        <img src="{{ $logoData }}" alt="Logo">
+      @endif
     </div>
 
-    <div class="content">
-        <table class="info-table">
-            <tr>
-                <td class="info-label">
-                    Nama Mahasiswa <span class="colon">:</span>
-                </td>
-                <td class="info-value">{{ $mahasiswa->name }}</td>
-            </tr>
-            <tr>
-                <td class="info-label">
-                    Email <span class="colon">:</span>
-                </td>
-                <td class="info-value">{{ $mahasiswa->email }}</td>
-            </tr>
-            <tr>
-                <td class="info-label">
-                    Tanggal Penilaian <span class="colon">:</span>
-                </td>
-                <td class="info-value">{{ $penilaian->tanggal }}</td>
-            </tr>
-            <tr>
-                <td class="info-label">
-                    Dicetak <span class="colon">:</span>
-                </td>
-                <td class="info-value">{{ now()->format('d-m-Y H:i') }}</td>
-            </tr>
-        </table>
+    <div class="nilai">NILAI AKHIR MAHASISWA MAGANG</div>
+    <div class="bank">BANK NAGARI PADANG</div>
+    <div class="line"></div>
+  </div>
 
-        <table class="tbl">
-            <tr>
-                <th style="width:40%;">Nilai Akhir</th>
-                <th style="width:25%;">Grade</th>
-                <th class="right" style="width:35%;">Total Skor</th>
-            </tr>
-            <tr>
-                <td>{{ number_format($penilaian->nilai_akhir ?? 0, 2) }}</td>
-                <td>{{ $penilaian->grade ?? '-' }}</td>
-                <td class="right">{{ $penilaian->total_skor ?? 0 }}</td>
-            </tr>
-        </table>
+  <div class="content">
 
-        <div class="note">Catatan: Nilai diambil dari penilaian terakhir mahasiswa.</div>
+    <div class="ident">
+      <table>
+        <tr>
+          <td class="label">Nama Mahasiswa<span>:</span></td>
+          <td class="value">{{ $mahasiswa->name ?? '-' }}</td>
+        </tr>
+        <tr>
+          <td class="label">Email<span>:</span></td>
+          <td class="value">{{ $mahasiswa->email ?? '-' }}</td>
+        </tr>
+      </table>
     </div>
 
+    <table class="main">
+      <thead>
+        <tr>
+          <th class="c-no">No</th>
+          <th>Aspek yang Dinilai</th>
+          <th class="c-range">Range Penilaian</th>
+          <th class="c-nilai">Nilai</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for($i=0; $i<15; $i++)
+          <tr>
+            <td class="c-no">{{ $i+1 }}</td>
+            <td>{{ $aspek[$i] ?? ('Aspek ' . ($i+1)) }}</td>
+            <td class="c-range">{{ $rangeText }}</td>
+            <td class="c-nilai">{{ $nilai[$i] ?? '-' }}</td>
+          </tr>
+        @endfor
+      </tbody>
+    </table>
+
+    <table class="sum">
+      <tr>
+        <td class="label">Total</td>
+        <td class="val">{{ $penilaian->total_skor ?? 0 }}</td>
+      </tr>
+      <tr>
+        <td class="label">Nilai Akhir</td>
+        <td class="val">{{ number_format($penilaian->nilai_akhir ?? 0, 2) }}</td>
+      </tr>
+      <tr>
+        <td class="label">Grade</td>
+        <td class="val">{{ $penilaian->grade ?? '-' }}</td>
+      </tr>
+    </table>
+
+    <div class="ttd">
+      <div class="ttd-right">
+        <div class="place">Padang, {{ now()->format('d-m-Y') }}</div>
+        <div class="jabatan">Pembimbing Lapangan</div>
+        <div class="nama">{{ $namaPejabat }}</div>
+        <div class="nip">NIP. {{ $nipPejabat }}</div>
+      </div>
+    </div>
+
+  </div>
 </div>
+
 </body>
 </html>

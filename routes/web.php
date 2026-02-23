@@ -10,13 +10,11 @@ use App\Http\Controllers\Admin\SupervisorController as AdminSupervisorController
 
 use App\Http\Controllers\Mahasiswa\MahasiswaDashboardController;
 use App\Http\Controllers\Mahasiswa\KegiatanController as MahasiswaKegiatanController;
-use App\Http\Controllers\Mahasiswa\EvaluasiController as MahasiswaEvaluasiController;
 use App\Http\Controllers\Mahasiswa\PenilaianController as MahasiswaPenilaianController;
 
 use App\Http\Controllers\Supervisor\DashboardController as SupervisorDashboardController;
 use App\Http\Controllers\Supervisor\MahasiswaController as SupervisorMahasiswaController;
 use App\Http\Controllers\Supervisor\KegiatanController as SupervisorKegiatanController;
-use App\Http\Controllers\Supervisor\EvaluasiController as SupervisorEvaluasiController;
 use App\Http\Controllers\Supervisor\PenilaianController as SupervisorPenilaianController;
 
 Route::get('/', fn () => view('home'))->name('home');
@@ -84,14 +82,16 @@ Route::middleware(['auth', 'role:mahasiswa'])
         Route::get('/laporan-kegiatan/tambah', [MahasiswaKegiatanController::class, 'create'])->name('kegiatan.create');
         Route::post('/laporan-kegiatan', [MahasiswaKegiatanController::class, 'store'])->name('kegiatan.store');
         Route::get('/laporan-kegiatan/{kegiatan}', [MahasiswaKegiatanController::class, 'show'])->name('kegiatan.show');
+
         Route::get('/laporan-kegiatan-cetak', [MahasiswaKegiatanController::class, 'print'])->name('kegiatan.print');
 
-        Route::get('/evaluasi', [MahasiswaEvaluasiController::class, 'index'])->name('evaluasi.index');
-        Route::get('/evaluasi/{evaluasi}', [MahasiswaEvaluasiController::class, 'show'])->name('evaluasi.show');
+        Route::get('/laporan-kegiatan-cetak-pdf', [MahasiswaKegiatanController::class, 'cetakPdf'])->name('kegiatan.cetak.pdf');
 
         Route::get('/penilaian', [MahasiswaPenilaianController::class, 'index'])->name('penilaian.index');
         Route::get('/penilaian/{penilaian}', [MahasiswaPenilaianController::class, 'show'])->name('penilaian.show');
         Route::get('/penilaian-cetak-pdf', [MahasiswaPenilaianController::class, 'cetakPdf'])->name('penilaian.cetak.pdf');
+
+        Route::get('/dashboard-status', [MahasiswaDashboardController::class, 'status'])->name('dashboard.status');
     });
 
 Route::middleware(['auth', 'role:supervisor'])
@@ -108,10 +108,6 @@ Route::middleware(['auth', 'role:supervisor'])
         Route::patch('/kegiatan/{kegiatan}/approve', [SupervisorKegiatanController::class, 'approve'])->name('kegiatan.approve');
         Route::patch('/kegiatan/{kegiatan}/reject', [SupervisorKegiatanController::class, 'reject'])->name('kegiatan.reject');
 
-        Route::get('/evaluasi', [SupervisorEvaluasiController::class, 'index'])->name('evaluasi.index');
-        Route::get('/evaluasi/{mahasiswa}', [SupervisorEvaluasiController::class, 'create'])->name('evaluasi.create');
-        Route::post('/evaluasi/{mahasiswa}', [SupervisorEvaluasiController::class, 'store'])->name('evaluasi.store');
-
         Route::get('/penilaian', [SupervisorPenilaianController::class, 'index'])->name('penilaian.index');
         Route::get('/penilaian/{mahasiswa}/create', [SupervisorPenilaianController::class, 'create'])->name('penilaian.create');
         Route::post('/penilaian/{mahasiswa}', [SupervisorPenilaianController::class, 'store'])->name('penilaian.store');
@@ -121,4 +117,15 @@ Route::middleware(['auth', 'role:supervisor'])
         Route::put('/penilaian/{mahasiswa}', [SupervisorPenilaianController::class, 'update'])->name('penilaian.update');
 
         Route::get('/penilaian/{mahasiswa}/cetak-pdf', [SupervisorPenilaianController::class, 'cetakPdf'])->name('penilaian.cetak.pdf');
+
+        Route::post('/logout', function () {
+            Auth::logout();
+            request()->session()->invalidate();
+            request()->session()->regenerateToken();
+            return redirect('/login');
+        })->name('logout');
+
+        Route::get('/laporan-kegiatan', [SupervisorKegiatanController::class, 'index'])->name('laporan-kegiatan.index');
+
+        Route::get('/laporan-kegiatan/{kegiatan}', [SupervisorKegiatanController::class, 'show'])->name('laporan-kegiatan.show');
     });

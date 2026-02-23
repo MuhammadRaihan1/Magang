@@ -1,137 +1,139 @@
 @extends('supervisor.layout')
 
 @section('content')
-<style>
-  body{
-    font-family:'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  }
 
-  /* PAGE HEADER */
-  .page-header{
+<style>
+.table-wrapper{
+    background:#f8fafc;
+    border:1px solid #d1d5db;
+    border-radius:6px;
+    overflow:hidden;
+}
+
+.table-header{
+    background:#5b8bd9;
+    color:#fff;
+    padding:10px 16px;
+    font-weight:600;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:22px;
-    flex-wrap:wrap;
-    gap:14px;
-  }
+}
 
-  .page-header h3{
+.table-header h4{
     margin:0;
-    font-size:26px;
-    font-weight:900;
-    color:#0f172a;
-  }
-
-  /* TABLE CARD */
-  .table-card{
-    background:#ffffff;
-    border-radius:20px;
-    box-shadow:0 22px 45px rgba(15,23,42,.08);
-    padding:0;
-  }
-
-  table{
-    width:100%;
-    border-collapse:separate;
-    border-spacing:0;
-  }
-
-  /* HEADER TABLE – FULL WARNA */
-  thead tr{
-    background:#c7d2fe; /* selaras dengan dashboard */
-  }
-
-  thead th{
-    padding:18px;
-    font-size:13px;
-    font-weight:900;
-    color:#1e293b;
-    text-transform:uppercase;
-    letter-spacing:.6px;
-    text-align:left;
-  }
-
-  thead th:first-child{
-    border-top-left-radius:20px;
-    width:80px;
-  }
-
-  thead th:last-child{
-    border-top-right-radius:20px;
-  }
-
-  tbody td{
-    padding:18px;
     font-size:15px;
-    color:#0f172a;
-    border-top:1px solid #e5e7eb;
-    vertical-align:middle;
-  }
+}
 
-  tbody tr{
-    transition:.15s ease;
-  }
+.filter-select{
+    padding:4px 8px;
+    font-size:13px;
+    border-radius:4px;
+    border:none;
+}
 
-  tbody tr:hover{
-    background:#f8fafc;
-  }
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:#fff;
+}
 
-  .td-name{
-    font-weight:700;
-  }
+thead{
+    background:#f1f5f9;
+}
 
-  .empty-state{
-    text-align:center;
-    padding:32px;
-    color:#64748b;
+thead th{
+    padding:10px;
+    font-size:13px;
     font-weight:600;
-  }
+    text-align:left;
+    border:1px solid #e5e7eb;
+}
 
-  @media(max-width:768px){
-    thead th,
-    tbody td{
-      padding:14px;
-      font-size:14px;
-    }
+tbody td{
+    padding:10px;
+    font-size:13px;
+    border:1px solid #e5e7eb;
+}
 
-    .page-header h3{
-      font-size:22px;
-    }
-  }
+tbody tr:nth-child(even){
+    background:#f9fafb;
+}
+
+tbody tr:hover{
+    background:#eef2f7;
+}
+
+.status-aktif{
+    color:#2563eb;
+    font-weight:600;
+}
+
+.status-selesai{
+    color:#16a34a;
+    font-weight:600;
+}
 </style>
 
-{{-- PAGE HEADER --}}
-<div class="page-header">
-  <h3>Mahasiswa Bimbingan</h3>
+<h3 style="margin-bottom:15px;">Mahasiswa Bimbingan</h3>
+
+<div class="table-wrapper">
+
+    <div class="table-header">
+        <h4>Data Mahasiswa Bimbingan</h4>
+
+        <form method="GET">
+            <select name="status"
+                    class="filter-select"
+                    onchange="this.form.submit()">
+
+                <option value="">Semua</option>
+                <option value="aktif"
+                    {{ request('status') == 'aktif' ? 'selected' : '' }}>
+                    Mahasiswa Aktif
+                </option>
+                <option value="selesai"
+                    {{ request('status') == 'selesai' ? 'selected' : '' }}>
+                    Mahasiswa Selesai
+                </option>
+            </select>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width:60px;">No</th>
+                <th>Nama</th>
+                <th>Email</th>
+                <th>Status Magang</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @forelse($mahasiswas as $mhs)
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $mhs->name }}</td>
+                    <td>{{ $mhs->email }}</td>
+                    <td>
+                        @if($mhs->status_magang == 'Selesai')
+                            <span class="status-selesai">Selesai</span>
+                        @else
+                            <span class="status-aktif">Aktif</span>
+                        @endif
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="4" style="text-align:center; padding:15px;">
+                        Tidak ada data mahasiswa.
+                    </td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+
 </div>
 
-{{-- TABLE --}}
-<div class="table-card">
-  <table>
-    <thead>
-      <tr>
-        <th>No</th>
-        <th>Nama</th>
-        <th>Email</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      @forelse($mahasiswas as $mhs)
-        <tr>
-          <td>{{ $loop->iteration }}</td>
-          <td class="td-name">{{ $mhs->name }}</td>
-          <td>{{ $mhs->email }}</td>
-        </tr>
-      @empty
-        <tr>
-          <td colspan="3" class="empty-state">
-            Belum ada mahasiswa bimbingan.
-          </td>
-        </tr>
-      @endforelse
-    </tbody>
-  </table>
-</div>
 @endsection

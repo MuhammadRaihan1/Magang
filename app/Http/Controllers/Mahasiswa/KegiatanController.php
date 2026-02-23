@@ -5,13 +5,32 @@ namespace App\Http\Controllers\Mahasiswa;
 use App\Http\Controllers\Controller;
 use App\Models\KegiatanHarian;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class KegiatanController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth', 'role:mahasiswa']);
+    }
+
+    private function getColumnName(): string
+    {
+        if (Schema::hasColumn('kegiatan_harians', 'user_id')) {
+            return 'user_id';
+        }
+
+        return 'mahasiswa_id';
+    }
+
     public function index(Request $request)
     {
-        $kegiatans = KegiatanHarian::where('user_id', auth()->id())
-            ->orderBy('tanggal', 'desc')
+        $user = $request->user();
+        $column = $this->getColumnName();
+
+        $kegiatans = KegiatanHarian::where($column, $user->id)
+            ->latest()
             ->paginate(10);
 
         return view('mahasiswa.kegiatan.index', compact('kegiatans'));
@@ -24,44 +43,50 @@ class KegiatanController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'tanggal'    => ['required', 'date'],
-            'jam_masuk'  => ['nullable'],
-            'jam_pulang' => ['nullable'],
-            'aktivitas'  => ['required', 'string', 'min:3'],
-            'lampiran'   => ['nullable', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
+        $request->validate([
+            'tanggal'    => 'required|date',
+            'jam_masuk'  => 'nullable',
+            'jam_pulang' => 'nullable',
+            'aktivitas'  => 'required|string'
         ]);
 
-        $data['user_id'] = auth()->id();
-        $data['status']  = 'Pending';
+        $column = $this->getColumnName();
 
-        if ($request->hasFile('lampiran')) {
-            $file = $request->file('lampiran');
-            $filename = time() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
-            $file->storeAs('kegiatan', $filename, 'public');
-            $data['lampiran'] = $filename;
-        }
+        KegiatanHarian::create([
+            $column      => auth()->id(),
+            'tanggal'    => $request->tanggal,
+            'jam_masuk'  => $request->jam_masuk,
+            'jam_pulang' => $request->jam_pulang,
+            'aktivitas'  => $request->aktivitas,
+        ]);
 
-        KegiatanHarian::create($data);
-
-        return redirect()
-            ->route('mahasiswa.kegiatan.index')
-            ->with('success', 'Laporan kegiatan berhasil disimpan (Pending).');
+        return redirect()->route('mahasiswa.kegiatan.index');
     }
 
     public function show(KegiatanHarian $kegiatan)
     {
-        abort_unless($kegiatan->user_id === auth()->id(), 403);
-
         return view('mahasiswa.kegiatan.show', compact('kegiatan'));
     }
 
-    public function print()
+    public function print(Request $request)
     {
-        $kegiatans = KegiatanHarian::where('user_id', auth()->id())
-            ->orderBy('tanggal', 'desc')
+        return $this->cetakPdf($request);
+    }
+
+    public function cetakPdf(Request $request)
+    {
+        $user = $request->user();
+        $column = $this->getColumnName();
+
+        $kegiatans = KegiatanHarian::where($column, $user->id)
+            ->latest()
             ->get();
 
-        return view('mahasiswa.kegiatan.print', compact('kegiatans'));
+        $pdf = Pdf::loadView('Mahasiswa.kegiatan.print', [
+            'kegiatans' => $kegiatans,
+            'user'      => $user,
+        ])->setPaper('A4', 'portrait');
+
+        return $pdf->stream('laporan-kegiatan-' . $user->name . '.pdf');
     }
 }

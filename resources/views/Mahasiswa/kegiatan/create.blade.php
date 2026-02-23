@@ -1,120 +1,182 @@
-<!doctype html>
-<html lang="id">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tambah Laporan Kegiatan</title>
-  @vite(['resources/css/app.css'])
-</head>
+@extends('layouts.mahasiswa')
 
-<body class="dash-page">
-  <div class="dash-wrap">
+@section('title','Tambah Laporan Kegiatan')
 
-    <aside class="dash-sidebar">
-      <div class="dash-brand">
-        <img src="{{ asset('images/bank.png') }}" alt="Bank Nagari" class="dash-brand-logo">
-      </div>
+@section('content')
 
-      <div class="dash-menu">
-        <div class="dash-section-title">LAYANAN</div>
-        <a class="dash-link active" href="{{ route('mahasiswa.kegiatan.index') }}">
-          <span class="dash-ico">🧾</span> Laporan Kegiatan
-        </a>
-      </div>
-    </aside>
+<style>
+html,body{
+    margin:0;
+    padding:0;
+    background:#e6edf5;
+    font-family:"Times New Roman", Times, serif;
+}
 
-    <main class="dash-main">
-      <div class="dash-topbar">
-        <div></div>
-        <div class="dash-topbar-name">{{ auth()->user()->name ?? 'Nama' }}</div>
-      </div>
+.page-title{
+    font-size:22px;
+    margin:0 10px 12px 10px;
+    font-weight:normal;
+}
 
-      <div class="dash-content">
-        <h1 class="page-title">Tambah Laporan Kegiatan</h1>
+.form-card{
+    background:#f8fafc;
+    margin:0 10px 15px 10px;
+    padding:20px 25px;
+    border-radius:8px;
+    border:1px solid #cbd5e1;
+    width:calc(100% - 20px);
+}
 
-        <form class="lap-card" method="POST" action="{{ route('mahasiswa.kegiatan.store') }}" enctype="multipart/form-data">
-          @csrf
+.form-group{
+    margin-bottom:14px;
+}
 
-          {{-- Tanggal --}}
-          <div class="lap-row">
-            <div class="lap-label">Tanggal</div>
-            <div class="lap-field">
-              <div class="lap-input-icon">
-                <span class="lap-ico">📅</span>
-                <input class="lap-input" type="date" name="tanggal" value="{{ old('tanggal') }}" required>
-              </div>
-              @error('tanggal') <div class="lap-err">{{ $message }}</div> @enderror
-            </div>
-          </div>
+.form-label{
+    font-size:14px;
+    margin-bottom:4px;
+}
 
-          {{-- Jam Masuk --}}
-          <div class="lap-row">
-            <div class="lap-label">Jam Masuk</div>
-            <div class="lap-field">
-              <div class="lap-input-icon">
-                <span class="lap-ico">🕒</span>
-                <input class="lap-input" type="time" name="jam_masuk" value="{{ old('jam_masuk') }}">
-              </div>
-              @error('jam_masuk') <div class="lap-err">{{ $message }}</div> @enderror
-            </div>
-          </div>
+.form-control{
+    width:100%;
+    padding:6px 8px;
+    border:1px solid #cbd5e1;
+    border-radius:4px;
+    font-size:13px;
+    background:#ffffff;
+    cursor:pointer;
+}
 
-          {{-- Jam Pulang --}}
-          <div class="lap-row">
-            <div class="lap-label">Jam Pulang</div>
-            <div class="lap-field">
-              <div class="lap-input-icon">
-                <span class="lap-ico">🕒</span>
-                <input class="lap-input" type="time" name="jam_pulang" value="{{ old('jam_pulang') }}">
-              </div>
-              @error('jam_pulang') <div class="lap-err">{{ $message }}</div> @enderror
-            </div>
-          </div>
+.form-control:focus{
+    outline:none;
+    border-color:#9BA9C4;
+}
 
-          {{-- Aktivitas --}}
-          <div class="lap-row">
-            <div class="lap-label">Aktivitas</div>
-            <div class="lap-field">
-              <textarea class="lap-textarea" name="aktivitas" rows="6" placeholder="Masukkan Detail Aktivitas" required>{{ old('aktivitas') }}</textarea>
-              @error('aktivitas') <div class="lap-err">{{ $message }}</div> @enderror
-            </div>
-          </div>
+textarea.form-control{
+    resize:vertical;
+}
 
-          {{-- Supervisor (Otomatis, tidak bisa diubah mahasiswa) --}}
-          <div class="lap-row">
-            <div class="lap-label">Nama<br>Supervisor</div>
-            <div class="lap-field">
-              <input
-                class="lap-input"
-                type="text"
-                value="{{ auth()->user()->supervisor->name ?? '-' }}"
-                readonly
-              >
-              <div class="lap-hint">
-                Supervisor ditetapkan oleh Admin.
-              </div>
-            </div>
-          </div>
+.form-hint{
+    font-size:11px;
+    color:#666;
+    margin-top:3px;
+}
 
-          {{-- Foto/Data Pendukung --}}
-          <div class="lap-row">
-            <div class="lap-label">Foto/<br>Data Pendukung</div>
-            <div class="lap-field">
-              <input class="lap-input-file" type="file" name="lampiran" accept=".jpg,.jpeg,.png,.pdf">
-              @error('lampiran') <div class="lap-err">{{ $message }}</div> @enderror
-              <div class="lap-hint">Opsional. Format: JPG/PNG/PDF</div>
-            </div>
-          </div>
+.form-error{
+    font-size:11px;
+    color:#dc2626;
+    margin-top:3px;
+}
 
-          <div class="lap-actions-right">
-            <a href="{{ route('mahasiswa.kegiatan.index') }}" class="btn-back-red">Kembali</a>
-            <button type="submit" class="btn-save-red">Simpan</button>
-          </div>
-        </form>
+.form-actions{
+    margin-top:20px;
+}
 
-      </div>
-    </main>
+.btn-back{
+    background:#dc2626;
+    color:#ffffff;
+    padding:6px 15px;
+    border:none;
+    border-radius:5px;
+    text-decoration:none;
+    font-size:13px;
+    margin-right:6px;
+}
 
-  </div>
-</body>
-</html>
+.btn-save{
+    background:#2563eb;
+    color:#ffffff;
+    padding:6px 15px;
+    border:none;
+    border-radius:5px;
+    font-size:13px;
+}
+
+/* 🔵 TABLE DIPERKECIL */
+.report-table{
+    width:100%;
+    border-collapse:collapse;
+    background:#ffffff;
+    font-size:13px;
+}
+
+.report-table th,
+.report-table td{
+    border:1px solid #cfd8e3;
+    padding:6px 8px;
+}
+
+.report-table th{
+    background:#eef2f7;
+    font-weight:normal;
+}
+</style>
+
+<div class="page-title">
+    Tambah Laporan Kegiatan
+</div>
+
+<div class="form-card">
+
+<form method="POST" action="{{ route('mahasiswa.kegiatan.store') }}" enctype="multipart/form-data">
+@csrf
+
+<div class="form-group">
+    <div class="form-label">Tanggal</div>
+    <input id="tanggal" class="form-control" type="date" name="tanggal" value="{{ old('tanggal') }}" required>
+    @error('tanggal') <div class="form-error">{{ $message }}</div> @enderror
+</div>
+
+<div class="form-group">
+    <div class="form-label">Jam Masuk</div>
+    <input id="jam_masuk" class="form-control" type="time" name="jam_masuk" value="{{ old('jam_masuk') }}">
+    @error('jam_masuk') <div class="form-error">{{ $message }}</div> @enderror
+</div>
+
+<div class="form-group">
+    <div class="form-label">Jam Pulang</div>
+    <input id="jam_pulang" class="form-control" type="time" name="jam_pulang" value="{{ old('jam_pulang') }}">
+    @error('jam_pulang') <div class="form-error">{{ $message }}</div> @enderror
+</div>
+
+<div class="form-group">
+    <div class="form-label">Aktivitas</div>
+    <textarea class="form-control" name="aktivitas" rows="4" required>{{ old('aktivitas') }}</textarea>
+    @error('aktivitas') <div class="form-error">{{ $message }}</div> @enderror
+</div>
+
+<div class="form-group">
+    <div class="form-label">Nama Supervisor</div>
+    <input class="form-control" type="text" value="{{ auth()->user()->supervisor->name ?? '-' }}" readonly>
+    <div class="form-hint">Supervisor ditetapkan oleh Admin.</div>
+</div>
+
+<div class="form-group">
+    <div class="form-label">Foto / Data Pendukung</div>
+    <input class="form-control" type="file" name="lampiran" accept=".jpg,.jpeg,.png,.pdf">
+    @error('lampiran') <div class="form-error">{{ $message }}</div> @enderror
+    <div class="form-hint">Opsional. Format: JPG/PNG/PDF</div>
+</div>
+
+<div class="form-actions">
+    <a href="{{ route('mahasiswa.kegiatan.index') }}" class="btn-back">Kembali</a>
+    <button type="submit" class="btn-save">Simpan</button>
+</div>
+
+</form>
+
+</div>
+
+{{-- 🔥 SCRIPT AGAR INPUT BISA DIKLIK DIMANA SAJA --}}
+<script>
+document.getElementById('tanggal').addEventListener('click', function(){
+    this.showPicker && this.showPicker();
+});
+document.getElementById('jam_masuk').addEventListener('click', function(){
+    this.showPicker && this.showPicker();
+});
+document.getElementById('jam_pulang').addEventListener('click', function(){
+    this.showPicker && this.showPicker();
+});
+</script>
+
+@endsection

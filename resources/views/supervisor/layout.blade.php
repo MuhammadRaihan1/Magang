@@ -94,13 +94,6 @@
                 Laporan Kegiatan
             </a>
 
-            {{-- EVALUASI --}}
-            <a href="{{ route('supervisor.evaluasi.index') }}"
-               class="{{ request()->routeIs('supervisor.evaluasi.*') ? 'active' : '' }}">
-                <i class="bi bi-clipboard-check"></i>
-                Evaluasi
-            </a>
-
             {{-- PENILAIAN --}}
             <a href="{{ route('supervisor.penilaian.index') }}"
                class="{{ request()->routeIs('supervisor.penilaian.*') ? 'active' : '' }}">

@@ -7,7 +7,6 @@
 
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-  {{-- Bootstrap Icons --}}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
   <style>
@@ -15,13 +14,12 @@
       --sidebar:#b9c9f1;
       --content:#eef2ff;
       --text:#0f172a;
-
       --danger:#DB1514;
       --danger-hover:#b31212;
       --menu-hover: rgba(255,255,255,.45);
-      --menu-active: rgba(255,255,255,.6);
-      --section-bg: rgba(15,23,42,.25);
-      --section-text: rgba(15,23,42,.65);
+      --menu-active: rgba(255,255,255,.65);
+      --section-bg: rgba(15,23,42,.18);
+      --section-text: rgba(15,23,42,.75);
     }
 
     *{ box-sizing:border-box; }
@@ -39,9 +37,9 @@
     }
 
     .dash-sidebar{
-      width:260px;
+      width:250px;
       background: var(--sidebar);
-      padding:18px;
+      padding:14px 16px 18px;
       display:flex;
       flex-direction:column;
     }
@@ -49,56 +47,67 @@
     .dash-brand{
       display:flex;
       justify-content:center;
-      margin-bottom:22px;
+      margin-bottom:14px;
     }
 
     .dash-brand-logo{
-      width:190px;
+      width:170px;
     }
 
-    .dash-menu{ display:flex; flex-direction:column; }
+    .dash-menu{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
 
     .dash-section-title{
-      margin:18px 0 10px;
-      font-size:12px;
+      margin:14px 0 6px;
+      font-size:11px;
       font-weight:800;
       color: var(--section-text);
       background: var(--section-bg);
-      padding:8px 12px;
-      border-radius:10px;
+      padding:6px 10px;
+      border-radius:8px;
+      letter-spacing:.5px;
     }
 
     .dash-link{
       display:flex;
       align-items:center;
-      gap:12px;
-      padding:12px 14px;
-      border-radius:14px;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:12px;
       color: var(--text);
       text-decoration:none;
-      margin-bottom:10px;
       font-weight:700;
+      transition:all .2s ease;
     }
 
-    .dash-link:hover{ background: var(--menu-hover); }
-    .dash-link.active{ background: var(--menu-active); }
+    .dash-link:hover{
+      background: var(--menu-hover);
+    }
+
+    .dash-link.active{
+      background: var(--menu-active);
+    }
 
     .dash-ico{
-      width:20px;
+      width:18px;
       display:flex;
       justify-content:center;
-      font-size:16px;
+      font-size:15px;
     }
 
     .dash-sidebar-footer{
       margin-top:auto;
+      padding-top:12px;
     }
 
     .btn-logout{
       width:100%;
-      height:46px;
+      height:42px;
       border:none;
-      border-radius:14px;
+      border-radius:12px;
       background: var(--danger);
       color:#fff;
       font-weight:800;
@@ -106,10 +115,14 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      gap:10px;
+      gap:8px;
+      font-size:13px;
+      transition:.2s;
     }
 
-    .btn-logout:hover{ background: var(--danger-hover); }
+    .btn-logout:hover{
+      background: var(--danger-hover);
+    }
 
     .dash-main{
       flex:1;
@@ -118,18 +131,28 @@
     }
 
     .dash-topbar{
-      height:58px;
+      height:52px;
       background:#fff;
       display:flex;
       align-items:center;
       justify-content:flex-end;
-      padding:0 22px;
+      padding:0 18px;
       border-bottom:1px solid rgba(15,23,42,.08);
-      font-weight:800;
+      font-weight:700;
+      font-size:14px;
     }
 
     .dash-content{
-      padding:26px;
+      padding:22px;
+    }
+
+    @media(max-width:992px){
+      .dash-sidebar{
+        width:220px;
+      }
+      .dash-brand-logo{
+        width:150px;
+      }
     }
   </style>
 </head>
@@ -137,14 +160,13 @@
 <body class="dash-page">
 <div class="dash-wrap">
 
-  {{-- SIDEBAR --}}
   <aside class="dash-sidebar">
     <div class="dash-brand">
       <img src="{{ asset('images/bank.png') }}" class="dash-brand-logo">
     </div>
 
     <div class="dash-menu">
-      {{-- Dashboard --}}
+
       <a class="dash-link {{ request()->routeIs('mahasiswa.dashboard') ? 'active' : '' }}"
          href="{{ route('mahasiswa.dashboard') }}">
         <span class="dash-ico"><i class="bi bi-speedometer2"></i></span>
@@ -153,29 +175,20 @@
 
       <div class="dash-section-title">LAYANAN</div>
 
-      {{-- Laporan Kegiatan --}}
       <a class="dash-link {{ request()->routeIs('mahasiswa.kegiatan.*') ? 'active' : '' }}"
          href="{{ route('mahasiswa.kegiatan.index') }}">
         <span class="dash-ico"><i class="bi bi-journal-text"></i></span>
         <span>Laporan Kegiatan</span>
       </a>
 
-      {{-- Evaluasi --}}
-      <a class="dash-link {{ request()->routeIs('mahasiswa.evaluasi.*') ? 'active' : '' }}"
-         href="{{ route('mahasiswa.evaluasi.index') }}">
-        <span class="dash-ico"><i class="bi bi-clipboard-check"></i></span>
-        <span>Evaluasi</span>
-      </a>
-
-      {{-- Penilaian --}}
       <a class="dash-link {{ request()->routeIs('mahasiswa.penilaian.*') ? 'active' : '' }}"
          href="{{ route('mahasiswa.penilaian.index') }}">
         <span class="dash-ico"><i class="bi bi-bar-chart-line"></i></span>
         <span>Penilaian</span>
       </a>
+
     </div>
 
-    {{-- Logout --}}
     <div class="dash-sidebar-footer">
       <form method="POST" action="{{ route('logout') }}">
         @csrf
@@ -187,7 +200,6 @@
     </div>
   </aside>
 
-  {{-- CONTENT --}}
   <main class="dash-main">
     <div class="dash-topbar">
       {{ auth()->user()->name }}

@@ -6,19 +6,33 @@ use App\Http\Controllers\Controller;
 use App\Models\Penilaian;
 use App\Models\User;
 use Illuminate\Http\Request;
-
-// ✅ TAMBAHAN
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class PenilaianController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $mahasiswa = User::where('role', 'mahasiswa')
+        $statusNilai = $request->status_nilai;
+
+        $query = User::where('role', 'mahasiswa')
+            ->where('supervisor_id', auth()->id())
             ->with(['penilaians' => function ($q) {
                 $q->latest()->limit(1);
-            }])
-            ->get();
+            }]);
+
+        if ($statusNilai === 'sudah') {
+            $query->whereHas('penilaians', function ($q) {
+                $q->whereNotNull('nilai_akhir');
+            });
+        }
+
+        if ($statusNilai === 'belum') {
+            $query->whereDoesntHave('penilaians', function ($q) {
+                $q->whereNotNull('nilai_akhir');
+            });
+        }
+
+        $mahasiswa = $query->latest()->get();
 
         return view('supervisor.penilaian.index', compact('mahasiswa'));
     }
@@ -104,7 +118,6 @@ class PenilaianController extends Controller
             ->with('success', 'Penilaian berhasil diperbarui.');
     }
 
-    // ✅ TAMBAHAN: CETAK PDF
     public function cetakPdf(User $mahasiswa)
     {
         $penilaian = Penilaian::where('mahasiswa_id', $mahasiswa->id)
@@ -116,11 +129,7 @@ class PenilaianController extends Controller
             'penilaian' => $penilaian,
         ])->setPaper('A4', 'portrait');
 
-        // tampilkan di tab browser
         return $pdf->stream('hasil-nilai-' . $mahasiswa->name . '.pdf');
-
-        // kalau mau download langsung, ganti jadi:
-        // return $pdf->download('hasil-nilai-' . $mahasiswa->name . '.pdf');
     }
 
     private function gradeFromScore(float $nilai): string

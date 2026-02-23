@@ -1,174 +1,218 @@
 @extends('admin.layout')
 
-@section('title', 'Edit Mahasiswa')
+@section('title','Edit Mahasiswa')
 
 @section('content')
 
-@php
-  $spvName = optional($user->supervisor)->name ?? 'Belum dipilih';
-@endphp
+<style>
+html,body{
+    margin:0;
+    padding:0;
+    background:#e6edf5;
+    font-family:"Times New Roman", Times, serif;
+}
 
-<div style="max-width:1100px; margin:0 auto;">
+/* Judul */
+.page-title{
+    font-size:26px;
+    margin:0 6px 14px 6px;
+    font-weight:normal;
+}
 
-  {{-- HEADER (tanpa tombol kembali) --}}
-  <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin: 6px 0 14px;">
-    <div>
-      <div style="font-size:18px; font-weight:600; color:#111827; margin:0;">
-        Edit Mahasiswa
-      </div>
-      <div style="font-size:13px; color:#6b7280; margin-top:4px;">
-        Perbarui data mahasiswa dan supervisor (opsional).
-      </div>
+/* Card utama */
+.form-box{
+    margin:0 3px 20px 3px;
+    background:#f8fafc;
+    border-radius:16px;
+    border:1px solid #cbd5e1;
+    overflow:hidden;
+    width:calc(100% - 6px);
+}
+
+/* Header biru */
+.form-header{
+    background:#BCC9EE;
+    color:#000;
+    padding:14px 20px;
+    font-size:17px;
+}
+
+/* Body */
+.form-body{
+    padding:20px;
+}
+
+/* Error */
+.form-alert{
+    background:#fee2e2;
+    border-left:5px solid #dc2626;
+    padding:12px 14px;
+    margin:16px;
+    border-radius:8px;
+}
+
+/* Row */
+.form-row{
+    display:flex;
+    margin-bottom:16px;
+}
+
+.form-label{
+    width:200px;
+    font-size:15px;
+}
+
+.form-field{
+    flex:1;
+}
+
+/* Input */
+.form-input{
+    width:100%;
+    height:42px;
+    padding:8px 12px;
+    border-radius:10px;
+    border:1px solid #cfd8e3;
+    font-size:14px;
+}
+
+.form-input:focus{
+    outline:none;
+    border-color:#2563eb;
+}
+
+/* Select */
+.form-select{
+    width:100%;
+    height:42px;
+    padding:8px 12px;
+    border-radius:10px;
+    border:1px solid #cfd8e3;
+    font-size:14px;
+    background:#fff;
+}
+
+/* Actions */
+.form-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:12px;
+    margin-top:20px;
+}
+
+.btn-save{
+    background:#16a34a;
+    color:#fff;
+    padding:8px 18px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.btn-cancel{
+    background:#dc2626;
+    color:#fff;
+    padding:8px 18px;
+    border-radius:12px;
+    text-decoration:none;
+    font-size:14px;
+}
+
+.btn-save:hover,
+.btn-cancel:hover{
+    opacity:.9;
+}
+</style>
+
+<div class="page-title">
+    Edit Mahasiswa
+</div>
+
+<div class="form-box">
+
+    <div class="form-header">
+        Form Edit Mahasiswa
     </div>
-  </div>
 
-  {{-- ERROR --}}
-  @if ($errors->any())
-    <div style="background:#fef2f2; border:1px solid #fecaca; color:#991b1b; padding:12px 14px; border-radius:12px; margin-bottom:14px; font-size:14px;">
-      <ul style="margin:0; padding-left:18px;">
-        @foreach ($errors->all() as $e)
-          <li>{{ $e }}</li>
-        @endforeach
-      </ul>
-    </div>
-  @endif
+    @if ($errors->any())
+        <div class="form-alert">
+            <ul style="margin:0; padding-left:18px;">
+                @foreach ($errors->all() as $e)
+                    <li>{{ $e }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-  {{-- GRID --}}
-  <div class="mhs-edit-grid"
-       style="display:grid; grid-template-columns: 1.7fr 1fr; gap:18px; align-items:start;">
+    <div class="form-body">
+        <form method="POST" action="{{ route('admin.mahasiswa.update', $user->id) }}">
+            @csrf
+            @method('PUT')
 
-    {{-- FORM CARD --}}
-    <div style="background:#fff; border-radius:16px; padding:18px; border:1px solid #e5e7eb; box-shadow:0 6px 18px rgba(0,0,0,0.05);">
-      <form method="POST" action="{{ route('admin.mahasiswa.update', $user->id) }}">
-        @csrf
-        @method('PUT')
-
-        <div style="display:grid; grid-template-columns:1fr; gap:14px;">
-
-          <div>
-            <label for="name" style="display:block; font-size:14px; color:#111827; margin-bottom:6px;">
-              Nama
-            </label>
-            <input id="name" type="text" name="name"
-                   value="{{ old('name', $user->name) }}"
-                   required
-                   style="width:100%; padding:11px 12px; font-size:14px;
-                          border:1px solid #e5e7eb; border-radius:12px; outline:none; background:#fff;">
-          </div>
-
-          <div>
-            <label for="email" style="display:block; font-size:14px; color:#111827; margin-bottom:6px;">
-              Email
-            </label>
-            <input id="email" type="email" name="email"
-                   value="{{ old('email', $user->email) }}"
-                   required
-                   style="width:100%; padding:11px 12px; font-size:14px;
-                          border:1px solid #e5e7eb; border-radius:12px; outline:none; background:#fff;">
-          </div>
-
-          <div>
-            <label for="password" style="display:block; font-size:14px; color:#111827; margin-bottom:6px;">
-              Password
-            </label>
-            <input id="password" type="password" name="password"
-                   placeholder="Kosongkan jika tidak diubah"
-                   style="width:100%; padding:11px 12px; font-size:14px;
-                          border:1px solid #e5e7eb; border-radius:12px; outline:none; background:#fff;">
-            <div style="margin-top:6px; font-size:12px; color:#6b7280;">
-              Kosongkan jika tidak ingin mengganti password.
+            <div class="form-row">
+                <div class="form-label">Nama</div>
+                <div class="form-field">
+                    <input type="text" name="name"
+                           value="{{ old('name', $user->name) }}"
+                           class="form-input" required>
+                </div>
             </div>
-          </div>
 
-          <div>
-            <label for="password_confirmation" style="display:block; font-size:14px; color:#111827; margin-bottom:6px;">
-              Konfirmasi Password
-            </label>
-            <input id="password_confirmation" type="password" name="password_confirmation"
-                   placeholder="Ulangi password"
-                   style="width:100%; padding:11px 12px; font-size:14px;
-                          border:1px solid #e5e7eb; border-radius:12px; outline:none; background:#fff;">
-          </div>
+            <div class="form-row">
+                <div class="form-label">Email</div>
+                <div class="form-field">
+                    <input type="email" name="email"
+                           value="{{ old('email', $user->email) }}"
+                           class="form-input" required>
+                </div>
+            </div>
 
-          <div>
-            <label for="supervisor_id" style="display:block; font-size:14px; color:#111827; margin-bottom:6px;">
-              Supervisor (Opsional)
-            </label>
+            <div class="form-row">
+                <div class="form-label">Password</div>
+                <div class="form-field">
+                    <input type="password" name="password"
+                           placeholder="Kosongkan jika tidak diubah"
+                           class="form-input">
+                </div>
+            </div>
 
-            <select id="supervisor_id" name="supervisor_id"
-                    style="width:100%; padding:11px 12px; font-size:14px;
-                           border:1px solid #e5e7eb; border-radius:12px; outline:none; background:#fff;">
-              <option value="">-- Pilih supervisor --</option>
+            <div class="form-row">
+                <div class="form-label">Konfirmasi Password</div>
+                <div class="form-field">
+                    <input type="password" name="password_confirmation"
+                           placeholder="Ulangi password"
+                           class="form-input">
+                </div>
+            </div>
 
-              @foreach ($supervisors as $spv)
-                <option value="{{ $spv->id }}"
-                        @selected(old('supervisor_id', $user->supervisor_id) == $spv->id)>
-                  {{ $spv->name }} ({{ $spv->email }})
-                </option>
-              @endforeach
-            </select>
-          </div>
-        </div>
+            <div class="form-row">
+                <div class="form-label">Supervisor (Opsional)</div>
+                <div class="form-field">
+                    <select name="supervisor_id" class="form-select">
+                        <option value="">-- Pilih supervisor --</option>
+                        @foreach ($supervisors as $spv)
+                            <option value="{{ $spv->id }}"
+                                @selected(old('supervisor_id', $user->supervisor_id) == $spv->id)>
+                                {{ $spv->name }} ({{ $spv->email }})
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
 
-        {{-- ACTIONS (tambah tombol kembali di samping batal) --}}
-        <div style="display:flex; gap:10px; margin-top:16px; flex-wrap:wrap;">
-          <button type="submit"
-                  style="padding:9px 16px; border-radius:12px; border:none; cursor:pointer;
-                         background:#2563eb; color:#fff; font-size:14px; font-weight:500;">
-            Simpan
-          </button>
+            <div class="form-actions">
+                <a href="{{ route('admin.mahasiswa.index') }}" class="btn-cancel">
+                    Batal
+                </a>
 
-          <a href="{{ route('admin.mahasiswa.index') }}"
-             style="padding:9px 16px; border-radius:12px; text-decoration:none; display:inline-flex;
-                    align-items:center; justify-content:center; border:1px solid #e5e7eb;
-                    background:#fff; color:#111827; font-size:14px; font-weight:500;">
-            Batal
-          </a>
+                <button type="submit" class="btn-save">
+                    Simpan
+                </button>
+            </div>
 
-          <a href="{{ route('admin.mahasiswa.index') }}"
-             style="padding:9px 16px; border-radius:12px; text-decoration:none; display:inline-flex;
-                    align-items:center; justify-content:center; border:1px solid #e5e7eb;
-                    background:#fff; color:#111827; font-size:14px; font-weight:500;">
-            Kembali
-          </a>
-        </div>
-      </form>
+        </form>
     </div>
-
-    {{-- INFO CARD --}}
-    <div style="background:#fff; border-radius:16px; padding:16px; border:1px solid #e5e7eb; box-shadow:0 6px 18px rgba(0,0,0,0.05);">
-      <div style="font-size:14px; color:#111827; font-weight:600; margin-bottom:12px;">
-        Info Mahasiswa
-      </div>
-
-      <div style="display:flex; justify-content:space-between; gap:10px; padding:10px 0; border-bottom:1px solid #f1f5f9; font-size:14px;">
-        <span style="color:#6b7280;">Nama</span>
-        <span style="color:#111827;">{{ $user->name }}</span>
-      </div>
-
-      <div style="display:flex; justify-content:space-between; gap:10px; padding:10px 0; border-bottom:1px solid #f1f5f9; font-size:14px;">
-        <span style="color:#6b7280;">Email</span>
-        <span style="color:#111827;">{{ $user->email }}</span>
-      </div>
-
-      <div style="display:flex; justify-content:space-between; gap:10px; padding:10px 0; border-bottom:1px solid #f1f5f9; font-size:14px;">
-        <span style="color:#6b7280;">Supervisor</span>
-        <span style="color:#111827;">{{ $spvName }}</span>
-      </div>
-
-      <div style="margin-top:12px; font-size:13px; color:#6b7280; line-height:1.5;">
-        Password boleh dikosongkan jika tidak diubah. Supervisor bersifat opsional.
-      </div>
-    </div>
-
-  </div>
-
-  {{-- RESPONSIVE --}}
-  <style>
-    @media (max-width: 900px){
-      .mhs-edit-grid{ grid-template-columns: 1fr !important; }
-    }
-  </style>
 
 </div>
 
