@@ -5,7 +5,6 @@
 @section('content')
 
 <style>
-/* ====== SEMUA CSS KAMU TETAP SAMA (TIDAK DIHAPUS) ====== */
 .page-wrap{
   padding:20px;
   background:#f5f7fa;

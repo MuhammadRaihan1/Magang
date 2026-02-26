@@ -12,14 +12,14 @@ html,body{
     font-family:"Times New Roman", Times, serif;
 }
 
-/* Judul */
+
 .page-title{
     font-size:26px;
     margin:0 6px 10px 6px;
     font-weight:normal;
 }
 
-/* Card utama */
+
 .report-box{
     margin:0 3px 20px 3px;
     background:#f8fafc;
@@ -40,7 +40,7 @@ html,body{
     font-size:17px;
 }
 
-/* Tombol header */
+
 .header-btn{
     background:#ffffff;
     color:#000;
@@ -51,7 +51,7 @@ html,body{
     font-size:14px;
 }
 
-/* Alert */
+
 .alert-success{
     background:#ecfeff;
     border-left:6px solid #2563eb;
@@ -60,14 +60,14 @@ html,body{
     border-radius:8px;
 }
 
-/* Tabel */
+
 .report-table{
     width:100%;
     border-collapse:collapse;
     background:#ffffff;
 }
 
-/* Header tabel */
+
 .report-table th{
     background:#eef2f7;
     border:1px solid #cfd8e3;
@@ -76,19 +76,19 @@ html,body{
     text-align:left;
 }
 
-/* Isi tabel */
+
 .report-table td{
     border:1px solid #cfd8e3;
     padding:14px 16px;
     font-size:15px;
 }
 
-/* Hover baris */
+
 .report-table tr:hover{
     background:#f1f5f9;
 }
 
-/* Aksi teks saja */
+
 .action-wrapper{
     display:flex;
     gap:14px;

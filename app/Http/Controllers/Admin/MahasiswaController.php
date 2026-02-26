@@ -37,7 +37,6 @@ class MahasiswaController extends Controller
             'supervisor_id' => ['nullable', 'exists:users,id'],
         ]);
 
-        // kalau supervisor_id diisi, pastikan itu benar role supervisor
         if (!empty($validated['supervisor_id'])) {
             $isSupervisor = User::where('id', $validated['supervisor_id'])
                 ->where('role', 'supervisor')

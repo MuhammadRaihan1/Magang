@@ -61,7 +61,7 @@ class SupervisorController extends Controller
         $user->name = $validated['name'];
         $user->email = $validated['email'];
 
-        // Password opsional (kalau diisi baru diubah)
+        
         if (!empty($validated['password'])) {
             $user->password = Hash::make($validated['password']);
         }
