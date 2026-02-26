@@ -292,15 +292,33 @@
   <h2 class="page-title">Dashboard</h2>
 
   <div class="hero">
-    <div>
-      <h3>Selamat datang, {{ auth()->user()->name }}</h3>
-      <p>Ringkasan verifikasi laporan mahasiswa bimbingan</p>
-      <a class="btn-soft" href="{{ route('supervisor.kegiatan.index', ['status' => 'Pending']) }}">Verifikasi Laporan</a>
-      <a class="btn-soft" href="{{ route('supervisor.penilaian.index') }}">Beri Penilaian</a>
-    </div>
-    <div class="pill">Supervisor</div>
+  <div>
+    <h3>Selamat datang, {{ auth()->user()->name }}</h3>
+    <p>Ringkasan verifikasi laporan mahasiswa bimbingan</p>
+    <a class="btn-soft" href="{{ route('supervisor.kegiatan.index', ['status' => 'Pending']) }}">Verifikasi Laporan</a>
+    <a class="btn-soft" href="{{ route('supervisor.penilaian.index') }}">Beri Penilaian</a>
   </div>
 
+  <div class="dropdown">
+    <button class="pill dropdown-toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false">
+        Supervisor
+    </button>
+
+    <ul class="dropdown-menu dropdown-menu-end">
+        <li>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="dropdown-item">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </button>
+            </form>
+        </li>
+    </ul>
+  </div>
+</div>
   <div class="cards">
     <div class="stat">
       <div>

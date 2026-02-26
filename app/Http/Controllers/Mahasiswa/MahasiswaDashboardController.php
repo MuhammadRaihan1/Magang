@@ -68,23 +68,23 @@ class MahasiswaDashboardController extends Controller
 
         foreach ($activities as $a) {
             $day = Carbon::parse($a->tanggal)->day;
+
             $status = method_exists($a, 'getVerifikasiStatus')
                 ? $a->getVerifikasiStatus()
-                : 'pending';
+                : ($a->status ?? 'pending');
 
             $statusByDate[$day] = $status;
         }
 
         $lastActivities = KegiatanHarian::where($column, $user->id)
-            ->latest()
-            ->limit(5)
+            ->orderByRaw('COALESCE(verified_at, updated_at, created_at) DESC')
             ->get();
 
         $today = Carbon::now()->toDateString();
 
         $laporanHariIni = KegiatanHarian::where($column, $user->id)
             ->whereDate('tanggal', $today)
-            ->latest()
+            ->orderByRaw('COALESCE(verified_at, updated_at, created_at) DESC')
             ->first();
 
         $penilaian = Penilaian::where('mahasiswa_id', $user->id)

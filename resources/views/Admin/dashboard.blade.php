@@ -61,6 +61,40 @@
     border-radius:999px;
     background: rgba(255,255,255,.2);
     border: 1px solid rgba(255,255,255,.3);
+    cursor:pointer;
+  }
+
+  .admin-wrapper{
+    position:relative;
+  }
+
+  .admin-menu{
+    display:none;
+    position:absolute;
+    right:0;
+    top:40px;
+    background:#fff;
+    border-radius:8px;
+    min-width:120px;
+    box-shadow:0 5px 15px rgba(0,0,0,.15);
+    overflow:hidden;
+    z-index:999;
+  }
+
+  .admin-menu a{
+    display:block;
+    padding:8px 12px;
+    text-decoration:none;
+    font-size:13px;
+    color:#000;
+  }
+
+  .admin-menu a:hover{
+    background:#f5f5f5;
+  }
+
+  .admin-wrapper.active .admin-menu{
+    display:block;
   }
 
   .cards{
@@ -269,7 +303,18 @@
       <a class="btn-soft" href="{{ route('admin.mahasiswa.create') }}">Tambah Mahasiswa</a>
       <a class="btn-soft" href="{{ route('admin.supervisor.create') }}">Tambah Supervisor</a>
     </div>
-    <div class="pill">Admin</div>
+
+    <div class="admin-wrapper" id="adminDropdown">
+      <div class="pill" onclick="toggleAdmin()">Admin ▾</div>
+      <div class="admin-menu">
+        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+          Logout
+        </a>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:none;">
+          @csrf
+        </form>
+      </div>
+    </div>
   </div>
 
   <div class="cards">
@@ -300,7 +345,9 @@
           @forelse($recentUsers as $u)
             <div class="act-item">
               <p class="act-title">{{ $u->name }}</p>
-              <p class="act-date">{{ \Carbon\Carbon::parse($u->created_at)->translatedFormat('l, d F Y') }}</p>
+              <p class="act-date">
+                {{ \Carbon\Carbon::parse($u->created_at)->timezone('Asia/Jakarta')->translatedFormat('l, d F Y - H:i') }}
+              </p>
               <div class="act-meta">
                 Email: {{ $u->email }} | {{ ucfirst($u->role) }}
               </div>
@@ -320,7 +367,6 @@
       </div>
       <div class="panel-body">
         <div class="cal-wrap">
-
           <div class="cal-month-nav">
             <a class="cal-nav-btn" href="?month={{ $prevMonth }}&year={{ $prevYear }}">←</a>
             <div>{{ $monthName }} {{ $year }}</div>
@@ -367,4 +413,18 @@
     </div>
   </div>
 </div>
+
+<script>
+function toggleAdmin(){
+  document.getElementById('adminDropdown').classList.toggle('active');
+}
+
+document.addEventListener('click', function(e){
+  var dropdown = document.getElementById('adminDropdown');
+  if(!dropdown.contains(e.target)){
+    dropdown.classList.remove('active');
+  }
+});
+</script>
+
 @endsection

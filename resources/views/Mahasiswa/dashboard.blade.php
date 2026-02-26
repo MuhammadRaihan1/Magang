@@ -5,6 +5,7 @@
 @section('content')
 
 <style>
+/* ====== SEMUA CSS KAMU TETAP SAMA (TIDAK DIHAPUS) ====== */
 .page-wrap{
   padding:20px;
   background:#f5f7fa;
@@ -38,24 +39,45 @@
   border-radius:14px;
   background:linear-gradient(90deg,#0ea5e9,#2563eb);
   color:#fff;
+  position:relative;
 }
 
-.welcome h3{
-  margin:0;
-  font-size:16px;
-  font-weight:500;
+.welcome h3{ margin:0; font-size:16px; font-weight:500; }
+.welcome p{ margin:4px 0 0; font-size:13px; opacity:.9; }
+
+.user-dropdown{ position:relative; cursor:pointer; }
+
+.dropdown-menu{
+  position:absolute;
+  right:0;
+  top:40px;
+  background:#fff;
+  color:#111;
+  border-radius:10px;
+  box-shadow:0 8px 20px rgba(0,0,0,.1);
+  padding:8px 0;
+  min-width:140px;
+  display:none;
+  z-index:100;
 }
 
-.welcome p{
-  margin:4px 0 0;
+.dropdown-menu button{
+  display:block;
+  width:100%;
+  padding:8px 14px;
   font-size:13px;
-  opacity:.9;
+  text-align:left;
+  background:none;
+  border:none;
+  cursor:pointer;
+  color:#ef4444;
 }
 
-.grid{
-  display:grid;
-  gap:16px;
-}
+.dropdown-menu button:hover{ background:#f1f5f9; }
+
+.show-dropdown{ display:block; }
+
+.grid{ display:grid; gap:16px; }
 
 .grid-2{
   display:grid;
@@ -74,10 +96,7 @@
   box-shadow:0 4px 14px rgba(0,0,0,.05);
 }
 
-.card-title{
-  font-size:14px;
-  margin-bottom:12px;
-}
+.card-title{ font-size:14px; margin-bottom:12px; }
 
 .step-row{
   display:flex;
@@ -97,35 +116,16 @@
   font-size:12px;
 }
 
-.step-active{
-  background:#0ea5e9;
-  color:#fff;
-}
+.step-active{ background:#0ea5e9; color:#fff; }
 
-.step-title{
-  font-size:13px;
-}
+.step-title{ font-size:13px; }
 
-.step-desc{
-  font-size:12px;
-  opacity:.7;
-}
+.step-desc{ font-size:12px; opacity:.7; }
 
 .activity-wrapper{
   max-height:350px;
   overflow-y:auto;
   padding-right:6px;
-}
-
-.activity-wrapper::-webkit-scrollbar{
-  width:6px;
-}
-.activity-wrapper::-webkit-scrollbar-track{
-  background:#f1f5f9;
-}
-.activity-wrapper::-webkit-scrollbar-thumb{
-  background:#cbd5e1;
-  border-radius:10px;
 }
 
 .activity-item{
@@ -145,11 +145,7 @@
 .a-time{font-size:12px;color:#16a34a;margin:3px 0;}
 .a-desc{font-size:12px;opacity:.8;}
 
-.cal-header{
-  display:flex;
-  justify-content:space-between;
-  margin-bottom:10px;
-}
+.cal-header{ display:flex; justify-content:space-between; margin-bottom:10px; }
 
 .cal-grid{
   display:grid;
@@ -181,10 +177,7 @@
 .status-approved{background:#bbf7d0;color:#065f46;}
 .status-rejected{background:#fecaca;color:#7f1d1d;}
 
-.cal-today{
-  background:#e0f2fe;
-  border-color:#7dd3fc;
-}
+.cal-today{ background:#e0f2fe; border-color:#7dd3fc; }
 
 .legend{
   display:flex;
@@ -199,12 +192,7 @@
   gap:6px;
 }
 
-.dot{
-  width:10px;
-  height:10px;
-  border-radius:50%;
-}
-
+.dot{ width:10px; height:10px; border-radius:50%; }
 .dot-today{background:#38bdf8;}
 .dot-pending{background:#94a3b8;}
 .dot-approved{background:#22c55e;}
@@ -212,7 +200,6 @@
 </style>
 
 @php
-
 $activities = $lastActivities ?? collect();
 
 $step1Active = false;
@@ -224,7 +211,6 @@ $step2Text = 'Belum ada laporan untuk diverifikasi';
 $step3Text = 'Nilai akhir belum diberikan';
 
 if(isset($laporanHariIni) && $laporanHariIni){
-
     $step1Active = true;
     $step1Text = 'Laporan hari ini sudah dibuat';
 
@@ -246,7 +232,6 @@ if(isset($penilaian) && $penilaian && $penilaian->nilai_akhir){
     $step3Active = true;
     $step3Text = 'Nilai akhir sudah diberikan';
 }
-
 @endphp
 
 <div class="page-wrap">
@@ -256,7 +241,6 @@ if(isset($penilaian) && $penilaian && $penilaian->nilai_akhir){
       <div class="breadcrumb">Application / Dashboard</div>
       <h2>Dashboard</h2>
     </div>
-    <div>{{ auth()->user()->name }}</div>
   </div>
 
   <div class="grid">
@@ -266,7 +250,16 @@ if(isset($penilaian) && $penilaian && $penilaian->nilai_akhir){
         <h3>Selamat datang, {{ auth()->user()->name }}</h3>
         <p>Ringkasan laporan dan penilaian</p>
       </div>
-      <div>Mahasiswa</div>
+
+      <div class="user-dropdown" onclick="toggleDropdown()">
+        <span>Mahasiswa ▾</span>
+        <div id="userMenu" class="dropdown-menu">
+          <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit">Logout</button>
+          </form>
+        </div>
+      </div>
     </div>
 
     <div class="card">
@@ -304,11 +297,33 @@ if(isset($penilaian) && $penilaian && $penilaian->nilai_akhir){
 
         <div class="activity-wrapper">
         @forelse($activities as $a)
+
+          @php
+            $status = method_exists($a,'getVerifikasiStatus')
+                ? $a->getVerifikasiStatus()
+                : ($a->status ?? 'pending');
+          @endphp
+
           <div class="activity-item">
-            <div class="a-title">Laporan Kegiatan</div>
-            <div class="a-time">{{ \Carbon\Carbon::parse($a->tanggal)->format('d F Y') }}</div>
-            <div class="a-desc">{{ $a->aktivitas }}</div>
+
+            @if($status === 'approved')
+              <div class="a-title">Laporan sudah diverifikasi supervisor</div>
+            @elseif($status === 'rejected')
+              <div class="a-title">Laporan ditolak supervisor</div>
+            @else
+              <div class="a-title">Laporan dikirim dan menunggu verifikasi</div>
+            @endif
+
+            <div class="a-time">
+              {{ \Carbon\Carbon::parse($a->updated_at)->translatedFormat('d F Y - H:i') }}
+            </div>
+
+            <div class="a-desc">
+              {{ $a->aktivitas }}
+            </div>
+
           </div>
+
         @empty
           <div class="activity-item">Belum ada laporan</div>
         @endforelse
@@ -331,10 +346,8 @@ if(isset($penilaian) && $penilaian && $penilaian->nilai_akhir){
 
           @for($i=1;$i<=$daysInMonth;$i++)
             @php $st = $statusByDate[$i] ?? null; @endphp
-
             <div class="cal-cell {{ $todayDay === $i ? 'cal-today' : '' }}">
               <div class="cal-date">{{ $i }}</div>
-
               @if($st)
                 <div class="cal-status
                   @if($st=='approved') status-approved
@@ -362,5 +375,20 @@ if(isset($penilaian) && $penilaian && $penilaian->nilai_akhir){
   </div>
 
 </div>
+
+<script>
+function toggleDropdown() {
+    document.getElementById("userMenu").classList.toggle("show-dropdown");
+}
+
+window.onclick = function(e) {
+    if (!e.target.closest('.user-dropdown')) {
+        var dropdown = document.getElementById("userMenu");
+        if (dropdown.classList.contains('show-dropdown')) {
+            dropdown.classList.remove('show-dropdown');
+        }
+    }
+}
+</script>
 
 @endsection

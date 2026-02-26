@@ -98,32 +98,6 @@
       font-size:15px;
     }
 
-    .dash-sidebar-footer{
-      margin-top:auto;
-      padding-top:12px;
-    }
-
-    .btn-logout{
-      width:100%;
-      height:42px;
-      border:none;
-      border-radius:12px;
-      background: var(--danger);
-      color:#fff;
-      font-weight:800;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      font-size:13px;
-      transition:.2s;
-    }
-
-    .btn-logout:hover{
-      background: var(--danger-hover);
-    }
-
     .dash-main{
       flex:1;
       display:flex;
@@ -189,15 +163,6 @@
 
     </div>
 
-    <div class="dash-sidebar-footer">
-      <form method="POST" action="{{ route('logout') }}">
-        @csrf
-        <button class="btn-logout">
-          <i class="bi bi-box-arrow-right"></i>
-          Logout
-        </button>
-      </form>
-    </div>
   </aside>
 
   <main class="dash-main">

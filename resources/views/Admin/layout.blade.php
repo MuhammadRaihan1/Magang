@@ -29,7 +29,6 @@
             min-height:100vh;
         }
 
-       
         .sidebar{
             width:260px;
             background: var(--sidebar);
@@ -87,43 +86,28 @@
             padding-top:10px;
         }
 
-        .logout-btn{
-            background:#ff0066;
-            color:#fff;
-            justify-content:center;
-        }
-        .logout-btn:hover{
-            background:#b91110;
-        }
-
-       
         .content{
             flex:1;
             padding:26px;
         }
 
-      
         .btn{
             height:44px;
             min-width:120px;
             padding:0 18px;
             border-radius:12px;
-
             background: var(--primary);
             color:#fff;
             text-decoration:none;
             font-weight:700;
             font-size:14px;
             line-height:1;
-
             border:none;
             cursor:pointer;
-
             display:inline-flex;
             align-items:center;
             justify-content:center;
             gap:8px;
-
             appearance:none;
             -webkit-appearance:none;
         }
@@ -134,9 +118,6 @@
             background: var(--danger);
         }
 
-        /* =========================
-           ALERT
-        ========================= */
         .alert{
             padding:10px 12px;
             border-radius:10px;
@@ -155,9 +136,6 @@
             font-weight:700;
         }
 
-        /* =========================
-           TABLE CARD + TABLE
-        ========================= */
         .table-card{
             background:#fff;
             border-radius:14px;
@@ -232,9 +210,6 @@
         .btn-edit-outline:hover{ background:rgba(22,163,74,.08); }
         .btn-delete-outline:hover{ background:rgba(239,68,68,.08); }
 
-        /* =========================
-           FORM CARD
-        ========================= */
         .form-card{
             background:#fff;
             border-radius:18px;
@@ -303,16 +278,6 @@
 
             <a class="menu {{ request()->routeIs('admin.supervisor.*') ? 'active' : '' }}"
                href="{{ route('admin.supervisor.index') }}">📄 Supervisor</a>
-        </div>
-
-        <div class="sidebar-bottom">
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="menu logout-btn"
-                        onclick="return confirm('Yakin ingin logout?')">
-                    🚪 Logout
-                </button>
-            </form>
         </div>
     </aside>
 
